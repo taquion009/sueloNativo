@@ -1,0 +1,38 @@
+{
+  "name": "suelonativo",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/eslint-plugin": "^11.7.0",
+    "@emotion/react": "^11.7.0",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.2.0",
+    "@mui/material": "^5.2.1",
+    "@sanity/block-content-to-html": "^2.0.0",
+    "@sanity/client": "^2.19.0",
+    "@sanity/image-url": "^1.0.1",
+    "axios": "^0.24.0",
+    "groq": "^2.15.0",
+    "mercadopago": "^1.5.8",
+    "next": "12.0.4",
+    "nodemailer": "^6.7.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-swipeable-views": "^0.14.0"
+  },
+  "devDependencies": {
+    "eslint": "7.32.0",
+    "eslint-config-next": "12.0.4"
+  },
+  "license": "UNLICENSED",
+  "author": {
+    "name": "Rodrigo Milesi",
+    "email": "rmilesi009@gmail.com"
+  }
+}
