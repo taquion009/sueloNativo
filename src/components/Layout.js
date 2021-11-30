@@ -2,7 +2,7 @@ import Head from 'next/head';
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import WhatsApp from './WhatsApp';
+import WhatsApp from './Whatsapp';
 import BackToTop from './BackToTop';
 
 const Layout = ({ children }) => {
