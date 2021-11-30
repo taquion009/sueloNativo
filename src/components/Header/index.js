@@ -41,8 +41,6 @@ import {
     const state = useContext(store)
     const { scroll = true } = props
   
-    console.log(state.cart.length)
-
     const ModalMenuStyle = styled.div`
       background: #fff;
       margin: 1.5em;
