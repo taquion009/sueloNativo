@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Rockwell Condensed';
+  src: url('../../public/font/ROCC.ttf');
+}
+@font-face {
+  font-family: 'Rubik';
+  src: url('../../public/font/Rubik-VariableFont_wght.ttf');
+}
 /* RESET STYLES */
 *,
 * > ::before,
@@ -5,6 +13,21 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+::selection {
+  background: #303030; /*Color naranja para el fondo*/
+  color: #fff;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 html,
@@ -20,4 +43,26 @@ a {
 
 img {
   max-width: 100%;
+}
+
+.section {
+  padding: 1em;
+  margin: 0 auto;
+  max-width: 1200px;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: nowrap;
+  gap: 1em;
+}
+
+.section h2 {
+  text-align: center;
+  display: inline-block;
+  font-weight: 400;
+  box-shadow: 0px 35px 0px -13.5px green;
+  margin: 1em auto 2em auto;
 }

@@ -5,13 +5,13 @@ import Footer from './Footer';
 import WhatsApp from './Whatsapp';
 import BackToTop from './BackToTop';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, scroll }) => {
   return (
     <>
       <Head>
           <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
+      <Header scroll={scroll === undefined? true : scroll} />
       <div id="back-to-top-anchor"></div>
       {children}
       <Footer />

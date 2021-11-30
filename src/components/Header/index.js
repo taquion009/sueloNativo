@@ -38,9 +38,9 @@ import {
   export default function Header(props) {
     const [ modalOpen, setModalOpen ] = useState(false);
     const [ mobileView, setMobileView ] = useState(false);
-    const state = useContext(store)
-    const { scroll = true } = props
-  
+    const { state } = useContext(store)
+    const { scroll } = props
+
     const ModalMenuStyle = styled.div`
       background: #fff;
       margin: 1.5em;
@@ -48,6 +48,7 @@ import {
       border-radius: 10px;
       padding-top: 2em;
       position: relative;
+      overflow: hidden;
       & > div {
         display: flex;
         flex-direction: column;
@@ -66,8 +67,10 @@ import {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5em;
+        font-size: 2em;
         font-weight: 800;
+        letter-spacing: 3px;
+        font-family: Rockwell Condensed;
       }
       & > svg {
         position: absolute;
@@ -80,6 +83,11 @@ import {
         transform: scale(1.5);
       }
     `;
+    
+    const FigureStyled = styled.figure`
+      padding-left: 6px;
+      filter: ${scroll?"invert(1)":"none"};
+      `
 
     useEffect(() => {
       const setResponsiveness = () => {
@@ -176,6 +184,7 @@ import {
                   key: label,
                 }}
                 key={label+href}
+                
               >
                 <Link href={href} passHref>
                   <MenuItem>{label}</MenuItem>
@@ -242,7 +251,7 @@ import {
               aria-label = "menu"
               aria-haspopup = "true"
               onClick = {handleModalOpen}
-              sx={{ mr: 3 }}
+              sx={{ mr: 1.5 }}
           >
             {!modalOpen?<MenuIcon />:<CloseIcon />}
         </IconButton>
@@ -260,6 +269,7 @@ import {
               padding: "3px 0",
             }}
         >
+        <FigureStyled>
           <Image
             alt="Femmecubator"
             height={64}
@@ -267,6 +277,7 @@ import {
             loading="eager"
             src={logo}
            />
+        </FigureStyled>
         </a>
       </Link>
     );

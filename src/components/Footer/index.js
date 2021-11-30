@@ -5,6 +5,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Image from 'next/image'
 import styled from '@emotion/styled';
+import logo from '../../../public/logo.png'
 
 const Footer = () => {
     const [url, setUrl] = useState("/")
@@ -21,7 +22,7 @@ const Footer = () => {
     },[])
 
     const FooterStyled = styled.footer`
-        background-color: #222;
+        background-color: #212121;
         margin-top: 1em;
         color: #fff;
         & > div {
@@ -77,18 +78,36 @@ const Footer = () => {
                 align-items: stretch;
             }
     `
-
+    const FigureStyled = styled.figure`
+        position: relative;
+        margin-top: 1em;
+        & > span {
+            filter: invert(1)
+        }
+        & > figcaption {
+            position: absolute;
+            width: 100%;
+            font-size: 0.9em;
+            top: 95px;
+            left: 3px;
+        }
+    `
 
   return (
     <FooterStyled>
       <div>
-        <Image
-            src='https://i0.wp.com/stallionorganicos.com/wp-content/uploads/2019/06/Isologotipo-Stallion-e1576032686238.png?fit=100%2C139&ssl=1' 
-            alt='logo'
-            width={90}
-            height={109}
-            layout='fixed'
-        />
+      <FigureStyled>
+            <Image
+                src={logo}
+                alt='logo'
+                width={90}
+                height={109}
+                layout='fixed'
+            />
+            <figcaption>
+                <h4>Suelo Nativo</h4>
+            </figcaption>
+        </FigureStyled>
         <div>
             <h3>EXPLORAR</h3>
             <ul>

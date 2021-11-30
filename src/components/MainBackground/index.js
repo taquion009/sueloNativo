@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Typography, Box, Button } from '@mui/material';
 import styled from '@emotion/styled';
+import Image from 'next/image';
+import Suelo from '../../../public/SUELO.png';
 
 function MainBackground() {
 
@@ -41,21 +43,19 @@ function MainBackground() {
     -ms-letter-spacing: 5px;
     letter-spacing: 5px;
     border-radius: 5px;
-  &:hover {
-    border: 3px solid green;
-    transform: scale(0.8);
-    color: green;
-  }
+    &:hover {
+      border: 3px solid #fff;
+      transform: scale(0.8);
+      color: #fff;
+    }
   `
 
-  const TypographyStyled = styled(Typography)`
-    color: #fff;
-    font-size: 2.5em;
-    text-align: center;
-    font-weight: 400;
-    margin: 0;
-    padding: 0 2em;
-    margin-top: 3em;
+  const ImageStyled = styled.figure`
+    width: 100%;
+    width: calc(80% - 1em);
+    max-width: 800px;
+    filter: invert(1);
+    margin-top: 4em;
   `
 
   return (
@@ -79,9 +79,16 @@ function MainBackground() {
             overflow:"hidden",
           }}
         >
-          <TypographyStyled variant="h1" component="h1" gutterBottom>
-            Transformamos desechos, enriquecemos suelos
-          </TypographyStyled>
+          <ImageStyled>
+            <Image
+              src={Suelo}
+              alt="Suelo"
+              width={1373}
+              height={405}
+              layout='responsive'
+              priority={true}
+            />
+          </ImageStyled>
           <ButtonStyled
            variant="outlined" 
            size="medium"
