@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 
 const WhatsApp = () => {
   const [url, setUrl] = useState("")
+  
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera
     if (typeof window === 'undefined') return;
