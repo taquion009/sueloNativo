@@ -16,9 +16,9 @@ import {
   import CloseIcon from '@mui/icons-material/Close';
   import Link from 'next/link';
   import Image from 'next/image'
-//   import { store } from '../../context/store'
-import logo from '../../../public/logo.png'
-import styled from '@emotion/styled';
+  import { store } from '../../context/store'
+  import logo from '../../../public/logo.png'
+  import styled from '@emotion/styled';
   
   const headersData = [
     {
@@ -38,9 +38,10 @@ import styled from '@emotion/styled';
   export default function Header(props) {
     const [ modalOpen, setModalOpen ] = useState(false);
     const [ mobileView, setMobileView ] = useState(false);
-    // const { state } = useContext(store)
+    const state = useContext(store)
     const { scroll = true } = props
   
+    console.log(state.cart.length)
 
     const ModalMenuStyle = styled.div`
       background: #fff;
@@ -129,10 +130,9 @@ import styled from '@emotion/styled';
                 marginLeft: "38px",
               }}
               size="large"
-              // aria-label={`show ${state.cart.length} new notifications`}
+              aria-label={`show ${state.cart.length} new notifications`}
               color="inherit">
-              {/* <Badge badgeContent={state.cart.length} color="error"> */}
-              <Badge badgeContent="0" color="error">
+              <Badge badgeContent={state.cart.length} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </Button >
@@ -187,19 +187,16 @@ import styled from '@emotion/styled';
           }
             <Link_UI
               size="large"
-              // aria-label={`show ${state.cart.length} new notifications`}
+              aria-label={`show ${state.cart.length} new notifications`}
               key="Cart"
               color="inherit"
               style= { {textDecoration: "none"} }
             >
               <Link href="/cart" passHref>
                 <MenuItem>
-                {/* <IconButton size="large" aria-label="show 12 new mails" color="inherit"> */}
-                  {/* <Badge badgeContent={state.cart.length} color="error"> */}
-                  <Badge badgeContent="0" color="error" className="card-icon-mobile">
+                  <Badge badgeContent={state.cart.length} color="error" className="card-icon-mobile">
                     <ShoppingCartIcon />
                   </Badge>
-                  {/* </IconButton> */}
                 </MenuItem>
               </Link>
             </Link_UI>
