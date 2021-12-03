@@ -5,7 +5,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Image from 'next/image'
 import styled from '@emotion/styled';
-import logo from '../../../public/logo.png'
+import logo from '../../../public/logo.svg'
 
 const Footer = () => {
     const [url, setUrl] = useState("/")
@@ -89,7 +89,7 @@ const Footer = () => {
             width: 100%;
             font-size: 0.9em;
             top: 95px;
-            left: 3px;
+            left: 0px;
         }
     `
 

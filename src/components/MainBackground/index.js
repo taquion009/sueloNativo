@@ -1,14 +1,20 @@
 import * as React from 'react';
-import { Typography, Box, Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import { sanity } from '../../lib/client'
+import imageUrlBuilder from '@sanity/image-url'
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Suelo from '../../../public/SUELO.png';
 
-function MainBackground() {
+function urlFor (source) {
+  return imageUrlBuilder(sanity).image(source)
+}
+
+function MainBackground({ background }) {
 
   const MainBackgroundStyled = styled.div`
     height: 95vh;
-    background: url("https://stallionorganicos.com/wp-content/uploads/2019/06/biology-blur-close-up-822474.jpg")
+    background: url("${urlFor(background).width(960).height(540).url()}");
       no-repeat;
     background-size: cover;
     background-position: center;

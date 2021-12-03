@@ -17,7 +17,7 @@ import {
   import Link from 'next/link';
   import Image from 'next/image'
   import { store } from '../../context/store'
-  import logo from '../../../public/logo.png'
+  import logo from '../../../public/logo.svg'
   import styled from '@emotion/styled';
   
   const headersData = [

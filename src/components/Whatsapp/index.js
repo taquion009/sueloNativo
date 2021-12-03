@@ -28,6 +28,7 @@ const WhatsApp = () => {
     -moz-box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.16);
     box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.16);
     cursor: pointer;
+    z-index: 9999;
     & > * {
       color: #fff;
       max-width: 100%;
