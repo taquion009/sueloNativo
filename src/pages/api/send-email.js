@@ -1,5 +1,4 @@
 import { sendEmail } from '../../lamda-services/send-email.service';
-import { ErrorMessages } from '../../config/error-messages';
 import axios from 'axios'
 
 const send = async (req, res) => {
@@ -7,7 +6,7 @@ const send = async (req, res) => {
     return res.status(404).json({
       error: {
         code: 'not_found',
-        message: ErrorMessages.EndpointMethodIncorrect,
+        message: "ErrorMessages.EndpointMethodIncorrect",
       },
     });
   

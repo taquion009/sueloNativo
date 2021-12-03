@@ -1,4 +1,4 @@
-import { sanityWriteClient as sanityClient } from '../../lib/sanity';
+import { sanityWriteClient as sanityClient } from '../lib/sanity';
 import { getPayment } from './mercadopago.service';
 
 export const updateSanityStock = async (paymentId) => {
