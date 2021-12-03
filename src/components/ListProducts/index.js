@@ -17,10 +17,10 @@ const Container = styled.div`
   gap: 0.25em;
 `
 
-const ListProducts = ({ products }) => {
+const ListProducts = ({ products, title }) => {
   return (
     <section className="section">
-        <h2>Nuevos sustraro</h2>
+        {title !== false && <h2>{title?title:"Nuevos sustraro"}</h2>}
         <Container>
           {
             products.map(product=><Product key={product._id} {...product} />)

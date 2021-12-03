@@ -4,7 +4,9 @@ import axios from 'axios';
 import { store } from '../context/store'
 import Loader from '../components/Loader';
 import validateForm from "../helpers/validateFrom";
-
+import Image from 'next/image'
+import Link from 'next/link';
+import styled from '@emotion/styled';
 import { 
   FormControl, 
   Box, 
@@ -29,7 +31,64 @@ import {
 } from '@mui/material';
 
 
-const FORM_ID = 'payment-form';
+
+const MpCheckoutStyled = styled.div`
+  & .mp-img-tarjetas {
+    padding: 8px!important;
+    height: unset!important;
+    width: 50px!important;
+    position: relative!important;
+    min-width: auto!important;
+    display: inline-block!important;
+  }
+  & span {
+    width: auto!important;
+    height: auto;
+    position: relative!important;
+    object-fit: cover;
+    display: inline-block!important;
+  }
+
+  & .mp-redirect-frame {
+    width: calc(100% - 4em);
+    text-align: center;
+    background-color: #f5f5f5;
+    padding: 25px 20px 20px;
+    display: block;
+    margin: 0 auto;
+    min-width: 200px;
+  }
+  & .mp-terms-and-conditions {
+    height: 18px;
+    padding: 16px;
+    font-family: sans-serif;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    color: rgba(0,0,0,.9);
+    margin-bottom: 2em;
+  }
+  & .mp-terms-and-conditions a {
+    color: #009ee3;
+  }
+
+  & .mp-redirect-frame-img > span img{
+    padding: 8px!important;
+    height: unset!important;
+    width: 200px!important;
+    position: relative!important;
+    min-width: auto!important;
+    display: inline-block!important;
+  }
+
+  & .mp-redirect-frame-img > span{
+    width: auto!important;
+    height: auto;
+    position: relative!important;
+    object-fit: cover;
+    display: inline-block!important;
+  }
+`   
 
 const Checkout = () => {
   const { state } = useContext(store)
@@ -329,7 +388,7 @@ const Checkout = () => {
                   onChange={handleChange} 
                 />
               </FormControl>
-              <FormControlLabel control={<Checkbox />} label="¿Crear una cuenta?" />
+              {/* <FormControlLabel control={<Checkbox />} label="¿Crear una cuenta?" /> */}
                 <TextField
                     label="Notas del pedido (opcional)"
                     multiline
@@ -395,9 +454,56 @@ const Checkout = () => {
                   name="radio-buttons-group"
                 >
                   <FormControlLabel value="mercado-pago" control={<Radio />} label="Comprar por mercado pago" />
-                  <FormControlLabel value="transferencia-bancaria" control={<Radio />} label="Comprar por transferencia bancaria" />
+                  {/* <FormControlLabel value="transferencia-bancaria" control={<Radio />} label="Comprar por transferencia bancaria" /> */}
                 </RadioGroup>
               </FormControl>
+              <MpCheckoutStyled>
+                <div className="mp-panel-checkout">
+                  <div className="mp-row-checkout">
+                  <div id="framePayments" className="mp-col-md-12">
+                    <div className="frame-tarjetas">
+                      <p className="mp-subtitle-basic-checkout">
+                        Tarjetas de crédito
+                      </p>
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/cordobesa.gif" className="mp-img-fluid mp-img-tarjetas" alt="" layout="fill" />
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/naranja.gif" className="mp-img-fluid mp-img-tarjetas" alt="" objectFit="contain" layout="fill" />
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/tarshop.gif" className="mp-img-fluid mp-img-tarjetas" alt="" objectFit="contain" layout="fill" />
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/diners.gif" className="mp-img-fluid mp-img-tarjetas" alt="" objectFit="contain" layout="fill" />
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/visa.gif" className="mp-img-fluid mp-img-tarjetas" alt="" objectFit="contain" layout="fill" />
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/amex.gif" className="mp-img-fluid mp-img-tarjetas" alt="" objectFit="contain" layout="fill" />
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/master.gif" className="mp-img-fluid mp-img-tarjetas" alt="" objectFit="contain" layout="fill" />
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/argencard.gif" className="mp-img-fluid mp-img-tarjetas" alt="" objectFit="contain" layout="fill" />
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/cmr.gif" className="mp-img-fluid mp-img-tarjetas" alt="" objectFit="contain" layout="fill" />
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/cabal.gif" className="mp-img-fluid mp-img-tarjetas" alt="" objectFit="contain" layout="fill" />
+                      <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/cencosud.gif" className="mp-img-fluid mp-img-tarjetas" alt="" objectFit="contain" layout="fill" />
+                    </div>
+                  </div>
+                  <div id="framePayments" className="mp-col-md-6 mp-pr-15">
+                  <div className="frame-tarjetas">
+                    <p className="submp-title-checkout">Tarjetas de débito</p>
+                    <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/debcabal.gif" className="mp-img-fluid mp-img-tarjetas" alt=""  objectFit="contain" layout="fill" />
+                    <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/debvisa.gif" className="mp-img-fluid mp-img-tarjetas" alt=""  objectFit="contain" layout="fill" />                                                                                                            
+                    <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/maestro.gif" className="mp-img-fluid mp-img-tarjetas" alt=""  objectFit="contain" layout="fill" />
+                    <Image src="https://www.mercadopago.com/org-img/MP3/API/logos/debmaster.gif" className="mp-img-fluid mp-img-tarjetas" alt=""  objectFit="contain" layout="fill" />
+                  </div>
+                </div>       
+                <div className="mp-col-md-12 mp-pt-20">
+                  <div className="mp-redirect-frame">
+                    <div className="mp-redirect-frame-img">
+                      <Image src="https://stallionorganicos.com/wp-content/plugins/woocommerce-mercadopago/includes/../assets/images/redirect_checkout.png" className="mp-img-fluid mp-img-redirect" alt="" objectFit="contain" layout="fill" />
+                    </div>
+                    <p>Te llevamos a nuestro sitio para completar el pago</p>
+                  </div>
+                </div>
+                </div>
+              </div>
+              <div>       
+                <p className="mp-terms-and-conditions"> 
+                  Al continuar, aceptas nuestros  		
+                  <a target="_blank" rel="noreferrer" href="https://www.mercadopago.com.ar/ayuda/terminos-y-politicas_194">  Términos y Condiciones </a>
+                </p> 		
+              </div>
+              </MpCheckoutStyled>
               <p>
               Tus datos personales se utilizarán para procesar tu pedido, mejorar tu experiencia en esta web y otros propósitos descritos en nuestra Política de Privacidad.
               </p>

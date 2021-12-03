@@ -315,6 +315,7 @@ import {
               backgroundColor:"#ffffff",
               boxShadow:"none",
               color:"#000",
+              paddingRight: "0!important",
               '@media (max-width: 900px)': {
                 paddingLeft: "0",
               }

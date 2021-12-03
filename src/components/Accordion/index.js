@@ -52,8 +52,8 @@ function Accordionc({ questions }) {
   return (
     <div 
       style={{
-        width: '100%',
-        maxWidth: "800px"
+        width: 'calc(100% - 1em)',
+        maxWidth: "1000px"
       }}
     >
       {questions.map((el, id)=>

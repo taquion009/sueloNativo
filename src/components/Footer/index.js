@@ -49,9 +49,9 @@ const Footer = () => {
         & h3 {
             padding: 2px;
             font-weight: 400;
-            box-shadow: 0px 2px 0px 0px green;
+            box-shadow: 0px 2px 0px 0px #fff;
             margin-bottom: 1em;
-            color: green;
+            color: #fff;
         }
         & .contactos ul {
             display: flex;
@@ -70,7 +70,7 @@ const Footer = () => {
               margin: 1em auto;
               width: 100%;
               margin-top: 2em;
-              color: green;
+              color: #fff;
             }
             & > div { 
                 text-align: center;
@@ -125,8 +125,8 @@ const Footer = () => {
         <div>
             <h3>VISITANOS</h3>
             <ul>
-            <li>Pablo Coster 1850</li>
-            <li>Bella Vista</li>
+            <li>Direccion 1234</li>
+            <li>Ejemplo de localidad</li>
             <li>Provincia de Buenos Aires</li>
             </ul>
         </div>
