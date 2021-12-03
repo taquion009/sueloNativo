@@ -1,7 +1,7 @@
 import groq from 'groq'
 import Head from "next/head";
 
-import Layout from '../../components/layout';
+import Layout from '../../components/Layout';
 import ProductDetail from '../../components/ProductDetail';
 import Description from '../../components/Description';
 import ProductImages from '../../components/ProductImages';
