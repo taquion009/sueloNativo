@@ -16,7 +16,7 @@ const Tienda = ({ products }) => {
 
 export const getStaticProps = async () => {
   const queryProducts = groq`
-    *[_type == "producto"]
+    *[_type == "producto"] | order(_createdAt asc)
   `
   const products = await sanity.fetch(queryProducts)
 

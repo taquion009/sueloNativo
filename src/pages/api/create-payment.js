@@ -67,9 +67,9 @@ let preference = {
   // payment_method_id: "visa",
   // transaction_amount: 58.8,
   back_urls: {
-      success: 'https://e-commerce-demo-kappa.vercel.app/success',
-      failure: 'https://e-commerce-demo-kappa.vercel.app/failure',
-      pending: 'https://e-commerce-demo-kappa.vercel.app/pending'
+      success: 'https://suelo-nativo.vercel.app/success',
+      failure: 'https://suelo-nativo.vercel.app/failure',
+      pending: 'https://suelo-nativo.vercel.app/pending'
     },
 };
 

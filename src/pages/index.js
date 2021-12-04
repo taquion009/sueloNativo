@@ -26,19 +26,19 @@ function Home({ questions, products, background }) {
 
 export const getStaticProps = async () => {
   const queryQuestions = groq`
-    *[_type == "PreguntaFrecuentes"]{_id, pregunta, respuesta}
+    *[_type == "PreguntaFrecuentes"] | order(_createdAt asc){_id, pregunta, respuesta}
   `
 
   const questions = await sanity.fetch(queryQuestions)
   const queryProducts = groq`
-    *[_type == "producto"]
+    *[_type == "producto"] | order(_createdAt asc)
   `
   const products = await sanity.fetch(queryProducts)
   const queryBackground = groq`
-    *[_type == "fondoPrincipal"]{img}
+    *[_type == "fondoPrincipal"] | order(_createdAt asc)[0]{img}
   `
   const background = await sanity.fetch(queryBackground)
-  return { props: { questions, products, background:background[0].img } }
+  return { props: { questions, products, background:background.img } }
 }
 
 export default Home;

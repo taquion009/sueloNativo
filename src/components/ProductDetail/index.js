@@ -153,7 +153,7 @@ const ProductDetail = (props) => {
             <Rating name="half-rating-read" defaultValue={props.valoracion} precision={0.5} sx={{margin:"0"}} readOnly />
             <p>{props.descripcionBreve}</p>
             <p className="p-antencion">Seleccioná el volumen para ver los precios.<br/> (1 litro = 1 dm3)</p>
-            <p>El pedido mínimo para finalizar tu compra es de $2.000 (en cualquier combinación de productos)</p>
+            <p>lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid</p>
             <Divider />
             <FormControl component="form" fullWidth onSubmit={handleSubmit} >
             <InputLabel id="demo-simple-select-label">Volumen</InputLabel>
