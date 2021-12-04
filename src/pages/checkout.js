@@ -88,7 +88,15 @@ const MpCheckoutStyled = styled.div`
     object-fit: cover;
     display: inline-block!important;
   }
+  
 `   
+
+const BoxStyled = styled(Box)`
+  & p, & .check-polite, & table{
+    margin-bottom: 1rem;
+  }
+
+`
 
 const Checkout = () => {
   const { state } = useContext(store)
@@ -100,7 +108,7 @@ const Checkout = () => {
     billing_last_name: {value: '', error: false},
     email: {value: '', error: false},
     id_type: {value: '', error: false},
-    billing_state: {value: '', error: false},
+    billing_state: {value: 'Buenos Aires', error: false},
     billing_: {value: '', error: false},
     billing_city: {value: '', error: false},
     billing_address_1: {value: '', error: false},
@@ -183,7 +191,7 @@ const Checkout = () => {
       <Layout scroll={false}>
         {loading && <Loader />}
         <main>
-          <Box
+          <BoxStyled
            sx={{
             maxWidth: '1200px',
               mx: 'auto',
@@ -308,30 +316,33 @@ const Checkout = () => {
                 />
               </FormControl>
               <FormControl variant="standard">
-                <InputLabel>Provincia</InputLabel>
-                <Select
-                  value={form.billing_state.value}
-                  error={form.billing_state.error}
+                <InputLabel htmlFor="pais">Provincia</InputLabel>
+                <Input 
+                  type="text" 
+                  id="pais" 
                   name="billing_state"
                   onChange={handleChange}
                   label="billing_state"
-                >
-                  <MenuItem value="Buenos Aires">Buenos Aires</MenuItem>
-                  <MenuItem value="CUIL">CUIL</MenuItem>
-                  <MenuItem value="CUIT">CUIT</MenuItem>
-                  <MenuItem value="CDI">CDI</MenuItem>
-                </Select>
+                  value={form.billing_state.value}
+                  error={form.billing_state.error}
+                  disabled 
+                />
               </FormControl>
               <FormControl variant="standard">
-                <InputLabel htmlFor="billing_city">Localidad / Ciudad</InputLabel>
-                <Input 
-                  type="text"
-                  id="billing_city"
-                  name="billing_city" 
+                <InputLabel>Localidad</InputLabel>
+                <Select
                   value={form.billing_city.value}
                   error={form.billing_city.error}
+                  id="billing_city"
+                  name="billing_city" 
                   onChange={handleChange}
-                  />
+                  label="billing_city"
+                >
+                  <MenuItem value="Buenos Aires">Localidad 1</MenuItem>
+                  <MenuItem value="CUIL">Localidad 2</MenuItem>
+                  <MenuItem value="CUIT">Localidad 3</MenuItem>
+                  <MenuItem value="CDI">Localidad 4</MenuItem>
+                </Select>
               </FormControl>
               <FormControl variant="standard">
                 <InputLabel>Nombre de la calle del Domicilio</InputLabel>
@@ -504,10 +515,10 @@ const Checkout = () => {
                 </p> 		
               </div>
               </MpCheckoutStyled>
-              <p>
-              Tus datos personales se utilizarán para procesar tu pedido, mejorar tu experiencia en esta web y otros propósitos descritos en nuestra Política de Privacidad.
-              </p>
-              <FormControlLabel control={<Checkbox />} label="Acepto los términos y condiciones de la Política de Privacidad" />
+                <p>
+                Tus datos personales se utilizarán para procesar tu pedido, mejorar tu experiencia en esta web y otros propósitos descritos en nuestra Política de Privacidad.
+                </p>
+              <FormControlLabel className="check-polite" control={<Checkbox />} label="Acepto los términos y condiciones de la Política de Privacidad" />
               <Button
                   variant="contained"
                   type="submit" 
@@ -515,7 +526,7 @@ const Checkout = () => {
                 >Realizar Pedido</Button>
             </Box>
           </Grid>
-          </Box>
+          </BoxStyled>
         </main>
       </Layout>
     );

@@ -10,9 +10,9 @@ const WhatsApp = () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera
     if (typeof window === 'undefined') return;
     if (Boolean(/Android|webOS|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(userAgent))) {
-      setUrl("https://api.whatsapp.com/send?phone=541122592209&text=")
+      setUrl("https://api.whatsapp.com/send?phone=541161227713&text=")
     }else{
-      setUrl("https://web.whatsapp.com/send?phone=541122592209&text=")
+      setUrl("https://web.whatsapp.com/send?phone=541161227713&text=")
     }
   },[])
 
