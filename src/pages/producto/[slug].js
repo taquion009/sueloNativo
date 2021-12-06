@@ -53,7 +53,7 @@ const Post = (props) => {
   const volumen = props.preciosPorVolumen.sort((a, b) => a.volumen - b.volumen)
 
   return (
-    <Layout scroll={false}>
+    <Layout scroll={false} informacion={props.informacion}>
       <Head>
         <title>{props.tituloDelProducto}</title>
       </Head>
@@ -124,7 +124,12 @@ export const getStaticProps = async ({ params }) => {
     dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   })
 
-  return { props: { ...res, questions, des:text, slug: slug} }
+  const queryinformacion = groq`
+  *[_type == "informacion"] | order(_createdAt asc)[0]
+  `
+  const informacion = await sanity.fetch(queryinformacion)
+
+  return { props: { ...res, questions, des:text, slug, informacion } }
 }
 
 export default Post

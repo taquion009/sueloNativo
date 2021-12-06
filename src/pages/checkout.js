@@ -5,8 +5,10 @@ import { store } from '../context/store'
 import Loader from '../components/Loader';
 import validateForm from "../helpers/validateFrom";
 import Image from 'next/image'
-import Link from 'next/link';
+import groq from 'groq'
+import { sanity } from '../lib/client'
 import styled from '@emotion/styled';
+
 import { 
   FormControl, 
   Box, 
@@ -98,7 +100,7 @@ const BoxStyled = styled(Box)`
 
 `
 
-const Checkout = () => {
+const Checkout = ({ informacion }) => {
   const { state } = useContext(store)
   const [preferenceId, setPreferenceId] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -188,7 +190,7 @@ const Checkout = () => {
   };
   
     return (
-      <Layout scroll={false}>
+      <Layout scroll={false} informacion={informacion}>
         {loading && <Loader />}
         <main>
           <BoxStyled
@@ -532,6 +534,15 @@ const Checkout = () => {
     );
     
 }
+
+export const getStaticProps = async () => {
+  const queryinformacion = groq`
+  *[_type == "informacion"] | order(_createdAt asc)[0]
+  `
+  const informacion = await sanity.fetch(queryinformacion)
+
+  return { props:{ informacion } }
+}  
 
 export default Checkout;
 

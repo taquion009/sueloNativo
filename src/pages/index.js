@@ -7,9 +7,9 @@ import ListProducts from '../components/ListProducts'
 import groq from 'groq'
 import { sanity } from '../lib/client'
 
-function Home({ questions, products, background }) {
+function Home({ questions, products, background, informacion }) {
   return (
-    <Layout>
+    <Layout informacion={informacion} >
         <Head>
           <title>Home</title>
           <meta name="description" content="Este es el home" />
@@ -38,7 +38,13 @@ export const getStaticProps = async () => {
     *[_type == "fondoPrincipal"] | order(_createdAt asc)[0]{img}
   `
   const background = await sanity.fetch(queryBackground)
-  return { props: { questions, products, background:background.img } }
+
+  const queryinformacion = groq`
+        *[_type == "informacion"] | order(_createdAt asc)[0]
+    `
+    const informacion = await sanity.fetch(queryinformacion)
+
+  return { props: { questions, products, background:background.img, informacion } }
 }
 
 export default Home;

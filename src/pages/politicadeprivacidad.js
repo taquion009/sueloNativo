@@ -38,9 +38,9 @@ const ContainerStyled = styled.div`
     }
 `
 
-const Politicadeprivacidad = ({ text }) => {
+const Politicadeprivacidad = ({ text, informacion }) => {
   return (
-    <Layout scroll={false}>
+    <Layout scroll={false} informacion={informacion} >
       <main style={{padding:"1em", minHeight: "500px"}}>
         <ContainerStyled itemProp="text">
           <h2>Política de Privacidad</h2>
@@ -64,7 +64,13 @@ export const getStaticProps = async () => {
     projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
     dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   })
-  return { props:{ text:text } }
+
+  const queryinformacion = groq`
+  *[_type == "informacion"] | order(_createdAt asc)[0]
+  `
+  const informacion = await sanity.fetch(queryinformacion)
+
+  return { props:{ text, informacion } }
 }
 
 

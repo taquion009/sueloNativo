@@ -7,7 +7,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import styled from '@emotion/styled';
 
 import imageUrlBuilder from '@sanity/image-url'
-
+import groq from 'groq'
 import { store } from '../context/store'
 import { sanity } from '../lib/client'
 
@@ -99,7 +99,7 @@ const TableContainerStyled = styled(TableContainer)`
   }
 `
 
-const Cart = () => {
+const Cart = ({ informacion }) => {
   const { state } = useContext(store)
   const [changeQuantity, setChangeQuantity] = useState(false)
   const [update, setUpdate] = useState(false)
@@ -117,7 +117,7 @@ const Cart = () => {
 
 
   return (
-    <Layout scroll={false}>
+    <Layout scroll={false} informacion={informacion} >
       <main style={{padding:"1em", minHeight: "500px"}}>
         <section className="section" style={{gap:"0"}}>
       <TableContainer component={Paper} sx={{maxWidth:"1200px", margin: "1em auto 0 auto", boxShadow: "none"}}>
@@ -204,6 +204,15 @@ const Cart = () => {
     </Layout>
   );
 };
+
+export const getStaticProps = async () => {
+  const queryinformacion = groq`
+  *[_type == "informacion"] | order(_createdAt asc)[0]
+  `
+  const informacion = await sanity.fetch(queryinformacion)
+
+  return { props:{ informacion } }
+}  
 
 export default Cart;
 

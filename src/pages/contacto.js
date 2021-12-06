@@ -5,6 +5,8 @@ import styled from '@emotion/styled';
 import ave from '../../public/ave.svg';
 import samurai from '../../public/samurai.svg';
 import Image from 'next/image';
+import groq from 'groq'
+import { sanity } from '../lib/client'
 
 const BoxStyled = styled(Box)`
     display: flex;
@@ -49,9 +51,9 @@ const ImageSamuraiStyled = styled.div`
     
 `
 
-const Contacto = () => {
+const Contacto = ({ informacion }) => {
   return (
-    <Layout scroll={false}>
+    <Layout scroll={false} informacion={informacion}>
       <main style={{
           padding:"1em", 
           minHeight: "500px", 
@@ -128,5 +130,14 @@ const Contacto = () => {
     </Layout>
   );
 };
+
+export const getStaticProps = async () => {
+    const queryinformacion = groq`
+    *[_type == "informacion"] | order(_createdAt asc)[0]
+    `
+    const informacion = await sanity.fetch(queryinformacion)
+  
+    return { props:{ informacion } }
+  }  
 
 export default Contacto;

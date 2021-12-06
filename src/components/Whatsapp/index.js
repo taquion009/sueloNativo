@@ -3,18 +3,18 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Fab from '@mui/material/Fab';
 import styled from '@emotion/styled';
 
-const WhatsApp = () => {
+const WhatsApp = ({ numero }) => {
   const [url, setUrl] = useState("")
   
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera
     if (typeof window === 'undefined') return;
     if (Boolean(/Android|webOS|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(userAgent))) {
-      setUrl("https://api.whatsapp.com/send?phone=541161227713&text=")
+      setUrl(`https://api.whatsapp.com/send?phone=54${numero}&text=`)
     }else{
-      setUrl("https://web.whatsapp.com/send?phone=541161227713&text=")
+      setUrl(`https://web.whatsapp.com/send?phone=54${numero}&text=`)
     }
-  },[])
+  },[numero])
 
   const WhatsappStyled = styled(Fab)`
     width: 60px;

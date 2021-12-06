@@ -1,11 +1,36 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Grid, Button, Divider, InputLabel, Select, MenuItem, FormControl, Rating, ButtonGroup } from '@mui/material';
+import { 
+    Grid,
+    Button, 
+    Divider, 
+    InputLabel,
+    Select,
+    MenuItem, 
+    FormControl, 
+    Rating, 
+    ButtonGroup, 
+    Dialog, 
+    DialogTitle, 
+    DialogContent, 
+    DialogContentText, 
+    DialogActions,
+    Slide,
+    Alert,
+    Link as LinkStyled } from '@mui/material';
 import { store } from '../../context/store'
 import { ADD_CART } from '../../context/actions'
 import { findProduct } from '../../context/use-local-storage'
 import styled from '@emotion/styled';
 import imageSafery from '../../../public/safely-mercado.png'
 import Image from 'next/image'
+import Link from 'next/link'
+import imageUrlBuilder from '@sanity/image-url'
+import { sanity } from '../../lib/client'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
+function urlFor (source) {
+    return imageUrlBuilder(sanity).image(source)
+}
 
 const GridStyled = styled(Grid)`
   & > *,
@@ -78,13 +103,49 @@ const GridStyled = styled(Grid)`
     border-style: solid;
     border-radius: 0px;
   }
+  & .added-cart{
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
 `
+
+const DialogTitleStyled = styled(DialogTitle)`
+  & > div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 0.5em;
+  }
+  & > div > h3{
+    font-size: 1em;
+  }
+  & > p{
+    font-size: 0.8em;
+  }
+`
+const DialogActionsStyled = styled(DialogActions)`
+  justify-content: space-around;
+`
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const ProductDetail = (props) => {
     const { state, dispatch } = useContext(store)
     const [cuantity, setCuantity] = useState(1);
     const [inputError, setInputError] = useState(false)
     const [volumen, setVolumen] = useState(0)
+    const [open, setOpen] = useState(false)
     
 
     useEffect(() => {
@@ -95,6 +156,9 @@ const ProductDetail = (props) => {
     }, [volumen, props._id, props.volumen, state.cart])
 
 
+    const handleToggle = () => {
+      setOpen(anterior => !anterior)
+    }
 
     const handleChangeVolumen = (event) => {
       setVolumen(event.target.value);
@@ -199,7 +263,44 @@ const ProductDetail = (props) => {
                 onClick={handleAddCuantity}
                 >+</Button>
                 </ButtonGroup>
-                <Button sx={{minWidth: "100px"}} type="submit" variant="contained">AGREGAR AL CARRITO</Button>
+                <Button onClick={handleToggle} sx={{minWidth: "100px"}} type="submit" variant="contained">AGREGAR AL CARRITO</Button>
+                <Dialog
+                  open={open}
+                  TransitionComponent={Transition}
+                  keepMounted
+                  onClose={handleToggle}
+                  aria-describedby="alert-dialog-slide-description"
+                >
+                  <DialogTitleStyled component="div">
+                    <div>
+                      <Image 
+                          src={`${urlFor(props.images[0]).width(50).height(50).url()}`}
+                          alt="imagen del producto agregado"
+                          width={50}
+                          height={50}
+                          layout="fixed"
+                        />
+                        <h3>{props.tituloDelProducto}</h3>
+                      </div>
+                      <p>volumen: {props.volumen[volumen].volumen}Lts</p>
+                      <p>cantidad: {cuantity}</p>
+                      <p>precio: ${Number(props.volumen[volumen].priceNow) * cuantity}</p>
+                  </DialogTitleStyled>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                      <Alert sx={{mb:"0.5em"}} severity="success">Producto añadido correctamente a su carrito de la compra</Alert>
+                      <p>Hay {state.cart.length} productos en el carrito</p>
+                      <p>Total de productos: ${state.cart.reduce((total, item) => total + item.price * item.quantity, 0)}</p>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActionsStyled>
+                    <LinkStyled component="button"
+                      variant="body2"
+                      onClick={handleToggle}
+                    >‹ Continuar la compra</LinkStyled>
+                    <Button variant="contained"><Link href="/cart"><a>Ir al carrito</a></Link></Button>
+                  </DialogActionsStyled>
+                </Dialog>
             </div>
             <Divider />
               <Image 
