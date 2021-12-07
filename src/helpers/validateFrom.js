@@ -14,7 +14,7 @@ switch (name) {
     error = value.length < 3;
     break;
     case 'billing_state':
-    error = value.length < 3;
+        error = value.length < 1 
     break;
     case 'billing_city':
     error = value.length < 3;

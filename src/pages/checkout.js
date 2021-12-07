@@ -29,7 +29,8 @@ import {
   TextField,
   Divider,
   Select,
-  MenuItem
+  MenuItem,
+  Autocomplete
 } from '@mui/material';
 
 
@@ -90,6 +91,10 @@ const MpCheckoutStyled = styled.div`
     object-fit: cover;
     display: inline-block!important;
   }
+
+  & .frame-tarjetas{
+    position: relative;
+  }
   
 `   
 
@@ -100,17 +105,18 @@ const BoxStyled = styled(Box)`
 
 `
 
-const Checkout = ({ informacion }) => {
+const Checkout = ({ informacion, provincias  }) => {
   const { state } = useContext(store)
   const [preferenceId, setPreferenceId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [localidades, setLocalidades] = useState(null);
 
   const [form, setForm] = useState({
     billing_first_name: {value: '', error: false},
     billing_last_name: {value: '', error: false},
     email: {value: '', error: false},
     id_type: {value: '', error: false},
-    billing_state: {value: 'Buenos Aires', error: false},
+    billing_state: {value: '', error: false},
     billing_: {value: '', error: false},
     billing_city: {value: '', error: false},
     billing_address_1: {value: '', error: false},
@@ -133,6 +139,17 @@ const Checkout = ({ informacion }) => {
     }
     }, [preferenceId, addCheckout]);
 
+    useEffect(() => {
+      if (form.billing_state.value === '') return;
+      axios.get(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${form.billing_state.value}&campos=id,nombre&max=1000`)
+      .then(res => {
+        const localidadesData = res.data.localidades.map(localidad => ({
+          id: localidad.id,
+          title: localidad.nombre
+        }));
+        setLocalidades(localidadesData)
+      })
+    }, [form.billing_state.value])
 
   function addCheckout() {
     const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY, {
@@ -318,34 +335,55 @@ const Checkout = ({ informacion }) => {
                 />
               </FormControl>
               <FormControl variant="standard">
-                <InputLabel htmlFor="pais">Provincia</InputLabel>
-                <Input 
-                  type="text" 
+                <InputLabel>Provincia</InputLabel>
+                <Select
                   id="pais" 
                   name="billing_state"
                   onChange={handleChange}
-                  label="billing_state"
                   value={form.billing_state.value}
                   error={form.billing_state.error}
-                  disabled 
-                />
-              </FormControl>
-              <FormControl variant="standard">
-                <InputLabel>Localidad</InputLabel>
-                <Select
-                  value={form.billing_city.value}
-                  error={form.billing_city.error}
-                  id="billing_city"
-                  name="billing_city" 
-                  onChange={handleChange}
-                  label="billing_city"
+                  label="billing_state"
                 >
-                  <MenuItem value="Buenos Aires">Localidad 1</MenuItem>
-                  <MenuItem value="CUIL">Localidad 2</MenuItem>
-                  <MenuItem value="CUIT">Localidad 3</MenuItem>
-                  <MenuItem value="CDI">Localidad 4</MenuItem>
+                  {provincias.map(({id, nombre}) => (<MenuItem key={id} value={nombre}>{nombre}</MenuItem>))}
                 </Select>
               </FormControl>
+              <Autocomplete
+                options={localidades || []}
+                getOptionLabel={(option) => option.title || 'Localidad'}
+                id="billing_city"
+                name="billing_city"
+                autoComplete={true}
+                onInputChange={(event, newInputValue) => {
+                  setForm({...form,
+                    billing_city: {
+                      ...form.billing_city,
+                      value: newInputValue,
+                    }})
+                }}
+                inputValue={form.billing_city.value}
+                error={form.billing_city.error.toString()}
+                handleHomeEndKeys
+                label="billing_city"
+                disabled={form.billing_state.value === ''}
+                renderOption={(props, option) => {
+                  return (
+                    <li {...props} key={option.id}>
+                      {option.title}
+                    </li>
+                  );
+                }}
+                renderInput={(params) =>{
+                  return <TextField 
+                    {...params} 
+                    variant="standard" 
+                    onChange={({ target }) => setForm({...form,
+                      billing_city: {
+                        ...form.billing_city,
+                        value: target.value,
+                    }})}
+                  label="Localidad"
+                 />}}
+              />
               <FormControl variant="standard">
                 <InputLabel>Nombre de la calle del Domicilio</InputLabel>
                 <Input 
@@ -502,7 +540,7 @@ const Checkout = ({ informacion }) => {
                 </div>       
                 <div className="mp-col-md-12 mp-pt-20">
                   <div className="mp-redirect-frame">
-                    <div className="mp-redirect-frame-img">
+                    <div className="mp-redirect-frame-img frame-tarjetas">
                       <Image src="https://stallionorganicos.com/wp-content/plugins/woocommerce-mercadopago/includes/../assets/images/redirect_checkout.png" className="mp-img-fluid mp-img-redirect" alt="" objectFit="contain" layout="fill" />
                     </div>
                     <p>Te llevamos a nuestro sitio para completar el pago</p>
@@ -541,7 +579,12 @@ export const getStaticProps = async () => {
   `
   const informacion = await sanity.fetch(queryinformacion)
 
-  return { props:{ informacion } }
+  const provinciasData = await axios.get('https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre&max=1000')
+  .then(function (response) {
+    return response.data.provincias
+  })
+
+  return { props:{ informacion, provincias:provinciasData } }
 }  
 
 export default Checkout;

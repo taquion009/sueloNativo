@@ -50,8 +50,6 @@ const GridStyled = styled(Grid)`
   }
 `
 const Post = (props) => {
-  const volumen = props.preciosPorVolumen.sort((a, b) => a.volumen - b.volumen)
-
   return (
     <Layout scroll={false} informacion={props.informacion}>
       <Head>
@@ -71,7 +69,7 @@ const Post = (props) => {
             alignItems: "center",
           }}
         > 
-         <ProductDetail {...props } volumen={volumen} />
+         <ProductDetail {...props } />
          <ProductImages images={props.images} />
         </GridStyled>
         <Description des={props.des} />

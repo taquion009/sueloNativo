@@ -144,25 +144,13 @@ const ProductDetail = (props) => {
     const { state, dispatch } = useContext(store)
     const [cuantity, setCuantity] = useState(1);
     const [inputError, setInputError] = useState(false)
-    const [volumen, setVolumen] = useState(0)
     const [open, setOpen] = useState(false)
     
-
-    useEffect(() => {
-      const id  = props._id + '+' + props.volumen[volumen].volumen
-      let  cuanti = findProduct(state.cart,{_id:id})?.quantity
-      ? findProduct(state.cart,{_id:id}).quantity : 1
-      setCuantity(cuanti)
-    }, [volumen, props._id, props.volumen, state.cart])
 
 
     const handleToggle = () => {
       setOpen(anterior => !anterior)
     }
-
-    const handleChangeVolumen = (event) => {
-      setVolumen(event.target.value);
-    };
 
     const checkInput = (valor) => {
       if(!/\d/.test(valor) || valor < 1){
@@ -193,13 +181,13 @@ const ProductDetail = (props) => {
       dispatch({
         type:ADD_CART,
         payload:{
-          _id:`${props._id}+${props.volumen[volumen].volumen}`,
+          _id:props._id,
           quantity:cuantity,
-          name:props.tituloDelProducto + ' ' + props.volumen[volumen].volumen + "Lts",
+          name:props.tituloDelProducto,
           image:props.images[0],
-          price:props.volumen[volumen].priceNow,
+          price:props.priceNow,
           slug:props.slug,
-          volumen:props.volumen[volumen].volumen,
+          volumen:props.volumen,
         }
       })
     }
@@ -220,24 +208,9 @@ const ProductDetail = (props) => {
             <p>lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid</p>
             <Divider />
             <FormControl component="form" fullWidth onSubmit={handleSubmit} >
-            <InputLabel id="demo-simple-select-label">Volumen</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={volumen}
-              label="Volumen"
-              onChange={handleChangeVolumen}
-            >
-                {
-                  props.volumen.map((precio, index)=>{
-                    return(
-                      <MenuItem value={index} key={index}>{precio.volumen}lts</MenuItem>
-                    )
-                  })
-                }
-            </Select>
+            <h3>Volumen: {props.volumen}Lts</h3>
             <Divider />
-            <span className="price">${Number(props.volumen[volumen].priceNow) * cuantity}</span>
+            <span className="price">${Number(props.priceNow) * cuantity}</span>
             <div className="container-addCart">
               
 
@@ -282,9 +255,9 @@ const ProductDetail = (props) => {
                         />
                         <h3>{props.tituloDelProducto}</h3>
                       </div>
-                      <p>volumen: {props.volumen[volumen].volumen}Lts</p>
+                      <p>volumen: {props.volumen}Lts</p>
                       <p>cantidad: {cuantity}</p>
-                      <p>precio: ${Number(props.volumen[volumen].priceNow) * cuantity}</p>
+                      <p>precio: ${Number(props.priceNow) * cuantity}</p>
                   </DialogTitleStyled>
                   <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
