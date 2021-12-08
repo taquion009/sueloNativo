@@ -141,6 +141,13 @@ const BoxStyled = styled(Box)`
     margin-bottom: 1rem;
   }
 
+  & button{
+    margin: auto;
+    display: block;
+    width: 100%;
+    height: 60px;
+  }
+
 `
 
 const AccordionStyled = styled(Accordion)`

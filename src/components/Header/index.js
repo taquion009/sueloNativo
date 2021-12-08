@@ -235,6 +235,9 @@ import {
             open: modalOpen,
             onClose: handleModalClose,
           }}
+          sx={{
+            zIndex: "999999",
+          }}
         >
           <ModalMenuStyle>
             <div>
