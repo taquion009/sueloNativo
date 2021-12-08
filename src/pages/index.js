@@ -11,9 +11,11 @@ function Home({ questions, products, background, informacion }) {
   return (
     <Layout informacion={informacion} >
         <Head>
-          <title>Home</title>
-          <meta name="description" content="Este es el home" />
-          <link rel="icon" href="/favicon.ico" />
+          <title>🌱 Suelo Nativo 🌱</title>
+          <meta name="description" content="Suelo Nativo - SOMOS PRODUCTORES 🇦🇷🌱BIOINSUMOS PARA CULTIVO 100% ORGÁNICO🌱⬇️ LIVING SOIL ⬇️▫️BOKASHI TRADICIONAL▫️MICROBOKASHI▫️MULCHING BIOMINERALIZADO"/>
+          <meta name="keywords" content="tierra, sustrato, abono, buenos aires, argentina, bioinsumos, orgánico, Living Soil"/>
+          <meta name="copyright" content="Propietario del copyright" />
+          <meta name="robots" content="index,follow" />
         </Head>
         <main>
           {background && <MainBackground background={background} />}

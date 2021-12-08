@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import React, { useContext, useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Link from 'next/link'
@@ -118,6 +119,9 @@ const Cart = ({ informacion }) => {
 
   return (
     <Layout scroll={false} informacion={informacion} >
+      <Head>
+          <title>Carrito - Suelo Nativo</title>
+      </Head>
       <main style={{padding:"1em", minHeight: "500px"}}>
         <section className="section" style={{gap:"0"}}>
       <TableContainer component={Paper} sx={{maxWidth:"1200px", margin: "1em auto 0 auto", boxShadow: "none"}}>

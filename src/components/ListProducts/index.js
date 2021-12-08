@@ -16,15 +16,13 @@ const Container = styled.div`
   align-items: flex-start;
   gap: 0.25em;
 `
-
-const ListProducts = ({ products, title }) => {
+const ListProducts = ({ products, title, tienda }) => {
   return (
-    <section className="section">
+    <section id="compra" className="section">
         {title !== false && <h2>{title?title:"Nuevos sustraro"}</h2>}
         <Container>
           {
-            products.map(product=><Product key={product._id} {...product} />)
-            
+            products.map(product=><Product tienda={tienda} key={product._id} {...product} />)
           }
         </Container>
     </section>

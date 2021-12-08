@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head'
 import Layout from '../components/Layout';
 import ListProducts from '../components/ListProducts'
 import groq from 'groq'
@@ -7,8 +8,11 @@ import { sanity } from '../lib/client'
 const Tienda = ({ products, informacion }) => {
   return (
     <Layout scroll={false} informacion={informacion} >
+      <Head>
+          <title>Tienda - Suelo Nativo</title>
+      </Head>
       <main style={{padding:"1em", minHeight: "500px"}}>
-        <ListProducts title={"Productos"} products={products} />
+        <ListProducts tienda={true} title={"Productos"} products={products} />
       </main>
     </Layout>
   );

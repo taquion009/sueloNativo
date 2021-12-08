@@ -53,7 +53,7 @@ const Post = (props) => {
   return (
     <Layout scroll={false} informacion={props.informacion}>
       <Head>
-        <title>{props.tituloDelProducto}</title>
+        <title>{props.tituloDelProducto} - Suelo Nativo</title>
       </Head>
       <main>
         <GridStyled 
@@ -70,7 +70,7 @@ const Post = (props) => {
           }}
         > 
          <ProductDetail {...props } />
-         <ProductImages images={props.images} />
+         <ProductImages images={props.images} oferta={props.oferta} />
         </GridStyled>
         <Description des={props.des} />
         <FrequentQuestions questions={props.questions} />

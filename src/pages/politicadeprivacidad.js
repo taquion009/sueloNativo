@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import React from 'react';
 import Layout from '../components/Layout';
 import styled from '@emotion/styled';
@@ -41,6 +42,9 @@ const ContainerStyled = styled.div`
 const Politicadeprivacidad = ({ text, informacion }) => {
   return (
     <Layout scroll={false} informacion={informacion} >
+      <Head>
+          <title>Politica de privacidad - Suelo Nativo</title>
+      </Head>
       <main style={{padding:"1em", minHeight: "500px"}}>
         <ContainerStyled itemProp="text">
           <h2>Política de Privacidad</h2>

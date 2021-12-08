@@ -10,6 +10,19 @@ function urlFor (source) {
   return imageUrlBuilder(sanity).image(source)
 }
 
+const handleClick = (event) => {
+  const anchor = (event.target.ownerDocument || document).querySelector(
+    '#compra',
+  );
+  if (anchor) {
+    anchor.scrollIntoView({
+      top:0,
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+};
+
 function MainBackground({ background }) {
 
   const MainBackgroundStyled = styled.div`
@@ -98,6 +111,7 @@ function MainBackground({ background }) {
           <ButtonStyled
            variant="outlined" 
            size="medium"
+           onClick={handleClick}
           >!COMPRAR¡
           </ButtonStyled>
         </Box>

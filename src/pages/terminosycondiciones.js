@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import styled from '@emotion/styled';
 import groq from 'groq'
+import Head from 'next/head'
 import { sanity } from '../lib/client'
 import blocksToHyperScript from '@sanity/block-content-to-html'
 
@@ -41,6 +42,9 @@ const ContainerStyled = styled.div`
 const Terminosycondiciones = ({ text, informacion }) => {
   return (
     <Layout scroll={false} informacion={informacion} >
+      <Head>
+          <title>Terminos y condiciones - Suelo Nativo</title>
+      </Head>
       <main style={{padding:"1em", minHeight: "500px"}}>
         <ContainerStyled itemProp="text">
           <h2>Términos y Condiciones</h2>

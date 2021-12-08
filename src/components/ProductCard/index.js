@@ -39,8 +39,42 @@ const MobileStepperStyled = styled(MobileStepper)`
   }
 `
 
+const Oferta = styled.div`
+  position: absolute;
+  top: calc(100% - 32px - 1em);
+  width: 60px;
+  left: calc(100% - 60px - 1em);
+  background-color: #fff;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #000;
+  text-transform: uppercase;
+  z-index: 1;
+  text-align: center;
+`
 
-function ProductCard({ images, tituloDelProducto, slug, valoracion }) {
+const Precios = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #000;
+  gap:1em;
+  & > .precioAnterior {
+    text-decoration: line-through;
+    color: #999;
+  }
+`
+
+
+function ProductCard(props) {
+  const { images, tituloDelProducto, valoracion, oferta, priceNow, precioAnterior, tienda } = props
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const [drag, setDrag] = React.useState(false);
@@ -67,6 +101,7 @@ function ProductCard({ images, tituloDelProducto, slug, valoracion }) {
 
   return (
     <Card sx={{
+      position: "relative",
       border:"none",
       boxShadow:"none",
       maxWidth:"100%",
@@ -81,6 +116,7 @@ function ProductCard({ images, tituloDelProducto, slug, valoracion }) {
       }
     }} >
       <Box sx={{position:"relative"}}>
+      {oferta && <Oferta>Oferta</Oferta>}
         <MobileStepperStyled
           className="nav-product"
           sx={{
@@ -194,12 +230,22 @@ function ProductCard({ images, tituloDelProducto, slug, valoracion }) {
                     cursor:"pointer",
                     fontweight: "600",
                     fontFamily: "'Roboto'",
-                    fontSize:"1.125em"
+                    fontSize:"1.125em",
+                    // textTransform: "uppercase",
+                    fontWeight: "bold"
                   }}
                 >
                   {tituloDelProducto}    
                 </Typography>
             </Link>
+            {tienda && 
+            <Precios>
+              {precioAnterior &&
+                 <span className="precioAnterior">Desde: ${precioAnterior}</span>
+              }
+              <span>Desde: ${priceNow}</span>
+           </Precios>
+            }
           <Rating name="half-rating-read" defaultValue={valoracion} precision={0.5} readOnly />
         </CardContent>
       </Card>

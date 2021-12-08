@@ -1,23 +1,40 @@
-import React from 'react';
+import Head from 'next/head'
+import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
-import { TextField, Box, Button } from '@mui/material';
+import { 
+    TextField, 
+    Box, 
+    Button, 
+    Slide, 
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    Link as LinkStyled,
+    Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import ave from '../../public/ave.svg';
 import samurai from '../../public/samurai.svg';
 import Image from 'next/image';
 import groq from 'groq'
 import { sanity } from '../lib/client'
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Link from 'next/link';
 
 const BoxStyled = styled(Box)`
     display: flex;
     flex-direction: column;
     align-content: center;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 1em;
     width: 100%;
-    max-width: 800px;
-    margin: 3em auto;
+    padding-top: 3em;
+    position: relative;
+    min-height: calc(100vh - 70px - 8em);
     & > * {
         background: #fff;
     }
@@ -29,7 +46,7 @@ const ImageStyled = styled.div`
     position: absolute;
     bottom: 0;
     left: calc(100% - 330px);
-    top: calc(100% - 390px);
+    top: calc(100% - 390px + 6em);
     width: 400px;
     height: 400px;
     overflow: hidden;
@@ -43,7 +60,7 @@ const ImageSamuraiStyled = styled.div`
     position: absolute;
     bottom: 0;
     left: -200px;
-    top: calc(100% - 400px);
+    top: calc(100% - 400px + 6em);
     width: 400px;
     height: 400px;
     overflow: hidden;
@@ -51,19 +68,108 @@ const ImageSamuraiStyled = styled.div`
     
 `
 
+const OtrosContacts = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    width: 255px;
+    max-width: 800px;
+    margin: 3em auto;
+    background-color:#000;
+    color: #fff;
+    padding: 1em;
+    border-radius: 10px;
+    & > div{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: space-around;
+        align-items: center;
+    }
+    & h3 {
+        font-size: 1.25em;
+        text-align: center;
+    }
+    & a {
+        padding: 0.5em;
+        width: 2.5em;
+        border-radius: 50%;
+        height: 2.5em;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+    }
+    & .icon-instagram{
+        background: #f09433; 
+        background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+        background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
+        background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
+    }
+    & .icon-whatsapp{
+        padding: 0.5em 0.5em 0.6em 0.6em;
+        background: #25d366;
+    }
+    & .icon-facebook{
+        background: #3b5998;
+    }
+`;
+
+const DialogTitleStyled = styled(DialogTitle)`
+  text-align: center;
+`
+const DialogActionsStyled = styled(DialogActions)`
+  justify-content: space-around;
+`
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+
 const Contacto = ({ informacion }) => {
+    const [url, setUrl] = useState("/")
+    const [open, setOpen] = useState(false);
+    const handleToggle = () => setOpen(ant => !ant);
+
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || informacion.whatsapp === undefined )return;
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera
+        if (Boolean(/Android|webOS|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(userAgent))) {
+            setUrl(`https://api.whatsapp.com/send?phone=54${informacion.whatsapp}&text=`)
+        }else{
+            setUrl(`https://web.whatsapp.com/send?phone=54${informacion.whatsapp}&text=`)
+        }
+    },[informacion.whatsapp])
+
   return (
     <Layout scroll={false} informacion={informacion}>
+      <Head>
+          <title>Contacto - Suelo Nativo</title>
+      </Head>
       <main style={{
           padding:"1em", 
           minHeight: "500px", 
           position:'relative',
           overflow: 'hidden'
           }}>
+    <section>
         <BoxStyled
             component="form"
             noValidate
             autoComplete="off"
+            onSubmit={e => {
+                e.preventDefault()
+                handleToggle()
+            }}
             >
             <TextField
             placeholder="Enter your name"
@@ -103,12 +209,10 @@ const Contacto = ({ informacion }) => {
             />
             <div className="button--container">
             <Button variant="contained" type="submit">
-                {/* {this.state.buttonText} */}
                 Enviar
             </Button>
             </div>
-        </BoxStyled>
-        <ImageStyled>
+            <ImageStyled>
             <Image 
                 src={ave} 
                 alt="ave"
@@ -126,7 +230,59 @@ const Contacto = ({ informacion }) => {
                 layout="fixed" 
             />
         </ImageSamuraiStyled>
+        </BoxStyled>
+        <OtrosContacts>
+                <h3>También puedes contactarnos por:</h3>
+                <div className="social-icons">
+                    {informacion.instagram &&
+                    <a href={informacion.instagram} className="icon-instagram" target="_blank" rel="noopener noreferrer">
+                        <InstagramIcon />
+                    </a>
+                    }
+                    {informacion.facebook &&
+                    <a href={informacion.facebook} className="icon-facebook" target="_blank" rel="noopener noreferrer">
+                        <FacebookIcon />
+                    </a>
+                    }
+                    {
+                    <a href={url} className="icon-whatsapp" target="_blank" rel="noopener noreferrer">
+                        <WhatsAppIcon  />
+                    </a>
+                    }    
+                </div>      
+            </OtrosContacts>
+    </section>
       </main>
+                <Dialog
+                  open={open}
+                  TransitionComponent={Transition}
+                  keepMounted
+                  onClose={handleToggle}
+                  sx={{
+                      width: "100%",
+                      "&>div>div": {
+                      maxWidth: "450px",
+                      }
+                  }}
+                >
+                  <DialogTitleStyled component="div">
+                      <Typography variant="h6" severity="success">
+                            ¡Gracias por contactarnos!
+                      </Typography>   
+                  </DialogTitleStyled>
+                  <DialogContent>
+                    <DialogContentText component="div" id="alert-dialog-slide-description">
+                      <p>Tu mensaje ha sido enviado con éxito, en breve nos pondremos en contacto contigo.</p>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActionsStyled>
+                    <LinkStyled component="button"
+                      variant="body2"
+                      onClick={handleToggle}
+                    >‹ cerrar  </LinkStyled>
+                    <Button variant="contained"><Link href="/"><a>Ir al inicio</a></Link></Button>
+                  </DialogActionsStyled>
+                </Dialog>
     </Layout>
   );
 };

@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import React, { useContext, useState, useEffect } from "react";
 import Layout from '../components/Layout';
 import axios from 'axios';
@@ -8,6 +9,7 @@ import Image from 'next/image'
 import groq from 'groq'
 import { sanity } from '../lib/client'
 import styled from '@emotion/styled';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
 import { 
   FormControl, 
@@ -30,9 +32,45 @@ import {
   Divider,
   Select,
   MenuItem,
-  Autocomplete
-} from '@mui/material';
+  Autocomplete,
+  Typography} from '@mui/material';
+  import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
+import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import { styled as styledUI } from '@mui/material/styles';
 
+
+const Accordion = styledUI((props) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  '&:not(:last-child)': {
+    borderBottom: 0,
+  },
+  '&:before': {
+    display: 'none',
+  },
+}));
+
+const AccordionSummary = styledUI((props) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  flexDirection: 'row-reverse',
+  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+    transform: 'rotate(90deg)',
+  },
+  '& .MuiAccordionSummary-content': {
+    marginLeft: theme.spacing(1),
+  },
+}));
+
+const AccordionDetails = styledUI(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: '1px solid rgba(0, 0, 0, .125)',
+}));
 
 
 const MpCheckoutStyled = styled.div`
@@ -105,11 +143,29 @@ const BoxStyled = styled(Box)`
 
 `
 
-const Checkout = ({ informacion, provincias  }) => {
+const AccordionStyled = styled(Accordion)`
+  width: calc(100% - 2em);
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  margin: 1em;
+  padding: 0;
+  & p{
+    margin-bottom: 0;
+  }
+  & .metodos{
+
+  }
+`
+
+const Checkout = ({ informacion, provincias, envio  }) => {
   const { state } = useContext(store)
   const [preferenceId, setPreferenceId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [localidades, setLocalidades] = useState(null);
+  const [accordion, setAccordion] = useState(true);
+
+  const toggleAccordion = () => setAccordion(!accordion);
 
   const [form, setForm] = useState({
     billing_first_name: {value: '', error: false},
@@ -208,6 +264,9 @@ const Checkout = ({ informacion, provincias  }) => {
   
     return (
       <Layout scroll={false} informacion={informacion}>
+      <Head>
+          <title>Checkout - Suelo Nativo</title>
+      </Head>
         {loading && <Loader />}
         <main>
           <BoxStyled
@@ -446,6 +505,22 @@ const Checkout = ({ informacion, provincias  }) => {
                     rows={4}
                 />
             </Box>
+            <AccordionStyled expanded={accordion} onChange={toggleAccordion}>
+                      <AccordionSummary>
+                        <Typography>Metodos de Envio</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <RadioGroup
+                          aria-label="envio"
+                          defaultValue="caba"
+                          name="radio-buttons-group"
+                        >
+                          <FormControlLabel value="envio al CABA y alrededores" control={<Radio />} label={`Enviar a CABA y alrededores, precio estándar $${envio.precioCaba}, pagar al recibir`} />
+                          <FormControlLabel value="envio al interior del país" control={<Radio />} label={`Enviar al interior del país, precio estándar $${envio.precioInterior}, pagar al recibir`} />
+                          <FormControlLabel value="acordar con el vendedor" control={<Radio />} label="Acordar con el vendedor durante el pago" />
+                        </RadioGroup>
+                      </AccordionDetails>
+            </AccordionStyled>   
           </Box>
           <Box
               sx={{
@@ -485,12 +560,6 @@ const Checkout = ({ informacion, provincias  }) => {
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <h3>Envio</h3>
-                    </TableCell>
-                    <TableCell>$10</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
                       <h3>Total</h3>
                     </TableCell>
                     <TableCell>{state.cart.length > 0 ? state.cart.reduce((total, product) => total + product.price * product.quantity, 0) + 10: 0}</TableCell>
@@ -505,7 +574,6 @@ const Checkout = ({ informacion, provincias  }) => {
                   name="radio-buttons-group"
                 >
                   <FormControlLabel value="mercado-pago" control={<Radio />} label="Comprar por mercado pago" />
-                  {/* <FormControlLabel value="transferencia-bancaria" control={<Radio />} label="Comprar por transferencia bancaria" /> */}
                 </RadioGroup>
               </FormControl>
               <MpCheckoutStyled>
@@ -579,12 +647,17 @@ export const getStaticProps = async () => {
   `
   const informacion = await sanity.fetch(queryinformacion)
 
+  const queryenvio = groq`
+  *[_type == "envios"] | order(_createdAt asc)[0]
+  `
+  const envio = await sanity.fetch(queryenvio)
+
   const provinciasData = await axios.get('https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre&max=1000')
   .then(function (response) {
     return response.data.provincias
   })
 
-  return { props:{ informacion, provincias:provinciasData } }
+  return { props:{ informacion, envio, provincias:provinciasData } }
 }  
 
 export default Checkout;

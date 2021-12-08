@@ -6,8 +6,6 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Image from 'next/image'
 import styled from '@emotion/styled';
 import logo from '../../../public/logo.svg'
-import groq from 'groq'
-import { sanity } from '../../lib/client'
 
 const FooterStyled = styled.footer`
 background-color: #212121;
@@ -137,9 +135,9 @@ const Footer = ({ informacion }) => {
         <div className="contactos">
             <h3>CONTACTANOS</h3>
             <ul>
-                {informacion.instagram && <li><Link href={informacion.instagram}><a><InstagramIcon /></a></Link></li>}
-                {informacion.facebook && <li><Link href={informacion.facebook}><a><FacebookIcon /></a></Link></li>}
-                {informacion.whatsapp && <li><Link href={url}><a><WhatsAppIcon /></a></Link></li>}
+                {informacion.instagram && <li><a href={informacion.instagram} target="_blank" rel="noopener noreferrer"><InstagramIcon /></a></li>}
+                {informacion.facebook && <li><a href={informacion.facebook} target="_blank" rel="noopener noreferrer"><FacebookIcon /></a></li>}
+                {informacion.whatsapp && <li><a href={url} target="_blank" rel="noopener noreferrer"><WhatsAppIcon /></a></li>}
             </ul>
         </div>
       </div>

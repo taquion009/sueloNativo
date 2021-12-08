@@ -38,6 +38,15 @@ const GridStyled = styled(Grid)`
     margin: 0.5em 0;
   }
 
+  & form{
+    margin-top: 0;
+  }
+
+  & form > h3{
+    margin-bottom: 0;
+    margin-top: 0.5em;
+  }
+
   & .MuiRating-root {
     margin: 0;
   }
@@ -67,9 +76,20 @@ const GridStyled = styled(Grid)`
     flex-wrap: wrap;
     justify-content: space-around;
   }
-
+  & .precios {
+    display: flex;
+    width: 100%;
+    gap: 1em;
+    flex-wrap: wrap;
+    justify-content: flex-start;  
+  }
   & .price {
     font-size: 1.75em;
+  }
+  & .precioAnterior{
+    font-size: 1.75em;
+    text-decoration: line-through;
+    color: #999;
   }
  & .buttonsQuantity {
     align-items: center;
@@ -202,15 +222,18 @@ const ProductDetail = (props) => {
           className="detail"
           >
             <h1>{props.tituloDelProducto}</h1>
-            <Rating name="half-rating-read" defaultValue={props.valoracion} precision={0.5} sx={{margin:"0"}} readOnly />
+            <Rating name="half-rating-read" defaultValue={props.valoracion} precision={0.5} readOnly />
             <p>{props.descripcionBreve}</p>
             <p className="p-antencion">Seleccioná el volumen para ver los precios.<br/> (1 litro = 1 dm3)</p>
             <p>lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid</p>
             <Divider />
-            <FormControl component="form" fullWidth onSubmit={handleSubmit} >
+            <FormControl sx={{margin: "0"}} component="form" fullWidth onSubmit={handleSubmit} >
             <h3>Volumen: {props.volumen}Lts</h3>
             <Divider />
-            <span className="price">${Number(props.priceNow) * cuantity}</span>
+            <div className="precios">
+              {props.precioAnterior && <span className="precioAnterior">${Number(props.precioAnterior) * cuantity}</span>}
+              <span className="price">${Number(props.priceNow) * cuantity}</span>
+            </div>
             <div className="container-addCart">
               
 
@@ -260,7 +283,7 @@ const ProductDetail = (props) => {
                       <p>precio: ${Number(props.priceNow) * cuantity}</p>
                   </DialogTitleStyled>
                   <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
+                    <DialogContentText component="div" id="alert-dialog-slide-description">
                       <Alert sx={{mb:"0.5em"}} severity="success">Producto añadido correctamente a su carrito de la compra</Alert>
                       <p>Hay {state.cart.length} productos en el carrito</p>
                       <p>Total de productos: ${state.cart.reduce((total, item) => total + item.price * item.quantity, 0)}</p>
