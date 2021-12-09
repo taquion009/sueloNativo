@@ -162,7 +162,7 @@ const ProductDetail = (props) => {
     const [open, setOpen] = useState(false)
 
     const handleToggle = () => {
-      if(!/\d/.test(valor) && isNaN(valor) && valor < 1 && valor % 1 !== 0){
+      if(!/\d/.test(cuantity) && isNaN(cuantity) && cuantity < 1 && cuantity % 1 !== 0){
         setOpen(!open)
       }
     }

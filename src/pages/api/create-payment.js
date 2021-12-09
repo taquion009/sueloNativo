@@ -5,7 +5,6 @@ import validateForm from '../../helpers/validateFrom';
 
 function configureMercadoPagoSDK() {
   configure({
-    // sandbox: process.env.useMercadoPagoSandbox === 'true',
     integrator_id:"dev_24c65fb163bf11ea96500242ac130004",
     access_token: process.env.MERCADO_PAGO_ACCESS_TOKEN,
   });
@@ -39,22 +38,9 @@ function urlFor (source) {
 let preference = {
   "notification_url":"https://suelo-nativo.vercel.app/api/send-email",
   "auto_return":"approved",
-  // "shipments": {
-  //   "receiver_address": {
-  //     "zip_code": "12312-123",
-  //     "state_name": "Rio de Janeiro",
-  //     "city_name": "Buzios",
-  //     "street_name": "Av das Nacoes Unidas",
-  //     "street_number": 3003
-  //   },
-  //   entity_type: "individual",
-  //   type: "customer",
-  // },
   "payment_methods": {
     "installments": 1
   },
-  // "barcode": {},
-  // description: "Payment for product",
   external_reference: "MP0001",
   payment_methods: {
     installments: 1,
@@ -71,14 +57,23 @@ let preference = {
     },
 };
 
-const createPayment = async (req, res) => {
-  for(let name in req.body.form) {
-    if(validateForm(name, req.body.form[name])) {
-      res.status(400).json({
-        errorInput: name,
-      });
+const validar = (form) => {
+    for(let name in form) {
+    if(validateForm(name, form[name])) {
+      return name;
     }
   };
+  return false;
+}
+
+const createPayment = async (req, res) => {
+  const valido = await validar(req.body.form);
+  
+  if(valido !== false) {
+    return res.status(400).json({
+      errorInput: valido
+    });
+  }
 
   configureMercadoPagoSDK()
 
