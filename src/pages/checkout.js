@@ -165,6 +165,19 @@ const AccordionStyled = styled(Accordion)`
   }
 `
 
+const addCheckout = (preferenceId) => {
+  const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY, {
+    locale: 'es-AR'
+  });
+  
+  mp.checkout({
+    preference: {
+      id: preferenceId,
+    },
+    autoOpen: true,
+  });
+}
+
 const Checkout = ({ informacion, provincias, envio  }) => {
   const { state } = useContext(store)
   const [preferenceId, setPreferenceId] = useState(null);
@@ -195,16 +208,15 @@ const Checkout = ({ informacion, provincias, envio  }) => {
     zip: {value: '', error: false},
   });
 
-
   useEffect(() => {
     if (preferenceId) {
         const script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = 'https://sdk.mercadopago.com/js/v2';
-        script.addEventListener('load', addCheckout);
+        script.addEventListener('load',()=> addCheckout(preferenceId));
         document.body.appendChild(script);
     }
-    }, [preferenceId, addCheckout]);
+    }, [preferenceId]);
 
     useEffect(() => {
       if (form.billing_state.value === '') return;
@@ -217,19 +229,6 @@ const Checkout = ({ informacion, provincias, envio  }) => {
         setLocalidades(localidadesData)
       })
     }, [form.billing_state.value])
-
-  function addCheckout() {
-    const mp = new window.MercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY, {
-      locale: 'es-AR'
-    });
-    
-    mp.checkout({
-      preference: {
-        id: preferenceId,
-      },
-      autoOpen: true,
-    });
-  }
 
   const handleChange = (event) => {
     const valideted = validateForm(event.target.name, event.target.value);
