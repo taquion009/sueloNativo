@@ -53,19 +53,17 @@ let preference = {
   "payment_methods": {
     "installments": 1
   },
-  "shipments":{
-    "cost": 10,
-    "mode": "not_specified",
-  },
   // "barcode": {},
   // description: "Payment for product",
   external_reference: "MP0001",
-  // installments: 1,
-  // order: {
-  //   type: "mercadolibre"
-  // },
-  // payment_method_id: "visa",
-  // transaction_amount: 58.8,
+  payment_methods: {
+    installments: 1,
+    excluded_payment_types: [
+      {
+        id: 'ticket',
+      }
+    ],
+  },
   back_urls: {
       success: 'https://suelo-nativo.vercel.app/success',
       failure: 'https://suelo-nativo.vercel.app/failure',
@@ -88,13 +86,14 @@ const createPayment = async (req, res) => {
     return {
       id: item._id,
       title: item.name,
-      description: "item.description",
+      description: `“${item.description}“`,
       picture_url: `${urlFor(item.image).width(400).height(400).url()}`,
       category_id: "item.category",
       quantity: item.quantity,
       unit_price: item.price,
     }
   })
+  preference
   preference.payer = {
     address: {
       zip_code: req.body.form.zip,

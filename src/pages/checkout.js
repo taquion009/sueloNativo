@@ -137,11 +137,11 @@ const MpCheckoutStyled = styled.div`
 `   
 
 const BoxStyled = styled(Box)`
-  & p, & .check-polite, & table{
+  & p, & .checkPolite, & table{
     margin-bottom: 1rem;
   }
 
-  & button{
+  & .btn-checkout{
     margin: auto;
     display: block;
     width: 100%;
@@ -179,6 +179,9 @@ const Checkout = ({ informacion, provincias, envio  }) => {
     billing_last_name: {value: '', error: false},
     email: {value: '', error: false},
     id_type: {value: '', error: false},
+    infoAdicional: {value: '', error: false},
+    envio: {value: '', error: false},
+    checkPolite: {value: false, error: false},
     billing_state: {value: '', error: false},
     billing_: {value: '', error: false},
     billing_city: {value: '', error: false},
@@ -191,6 +194,7 @@ const Checkout = ({ informacion, provincias, envio  }) => {
     city: {value: '', error: false},
     zip: {value: '', error: false},
   });
+
 
   useEffect(() => {
     if (preferenceId) {
@@ -234,6 +238,14 @@ const Checkout = ({ informacion, provincias, envio  }) => {
       [event.target.name]: {error:valideted,value:event.target.value }
     });
   };
+
+  const handleChangePolite = (event) => {
+    const valideted = validateForm(event.target.name, event.target.checked);
+    setForm({
+      ...form,
+      [event.target.name]: {error:valideted,value:event.target.checked }
+    });
+  };
   
   const getFormValues = () => {
     const formValues = {};
@@ -259,6 +271,9 @@ const Checkout = ({ informacion, provincias, envio  }) => {
       })
       .catch((error) => {
         setLoading(false);
+        if(error.response.data.errorInput !== 'envio' && error.response.data.errorInput !== 'checkPolite'){
+        document.getElementById(error.response.data.errorInput).focus();
+        }
         setForm({...form,
           [error.response.data.errorInput]:{
             ...form[error.response.data.errorInput],
@@ -368,6 +383,7 @@ const Checkout = ({ informacion, provincias, envio  }) => {
                   value={form.id_type.value}
                   error={form.id_type.error}
                   name="id_type"
+                  id="id_type"
                   onChange={handleChange}
                   label="id_type"
                 >
@@ -403,7 +419,7 @@ const Checkout = ({ informacion, provincias, envio  }) => {
               <FormControl variant="standard">
                 <InputLabel>Provincia</InputLabel>
                 <Select
-                  id="pais" 
+                  id="billing_state" 
                   name="billing_state"
                   onChange={handleChange}
                   value={form.billing_state.value}
@@ -508,6 +524,11 @@ const Checkout = ({ informacion, provincias, envio  }) => {
               {/* <FormControlLabel control={<Checkbox />} label="¿Crear una cuenta?" /> */}
                 <TextField
                     label="Notas del pedido (opcional)"
+                    name="infoAdicional"
+                    id="infoAdicional"
+                    value={form.infoAdicional.value}
+                    error={form.infoAdicional.error}
+                    onChange={handleChange}
                     multiline
                     rows={4}
                 />
@@ -519,8 +540,11 @@ const Checkout = ({ informacion, provincias, envio  }) => {
                       <AccordionDetails>
                         <RadioGroup
                           aria-label="envio"
-                          defaultValue="caba"
-                          name="radio-buttons-group"
+                          name="envio"
+                          id="envio"
+                          value={form.envio.value}
+                          style={form.envio.error? {border: '1px solid red'}:{border: 'none'}} 
+                          onChange={handleChange}     
                         >
                           <FormControlLabel value="envio al CABA y alrededores" control={<Radio />} label={`Enviar a CABA y alrededores, precio estándar $${envio.precioCaba}, pagar al recibir`} />
                           <FormControlLabel value="envio al interior del país" control={<Radio />} label={`Enviar al interior del país, precio estándar $${envio.precioInterior}, pagar al recibir`} />
@@ -569,7 +593,7 @@ const Checkout = ({ informacion, provincias, envio  }) => {
                     <TableCell>
                       <h3>Total</h3>
                     </TableCell>
-                    <TableCell>{state.cart.length > 0 ? state.cart.reduce((total, product) => total + product.price * product.quantity, 0) + 10: 0}</TableCell>
+                    <TableCell>{state.cart.length > 0 ? state.cart.reduce((total, product) => total + product.price * product.quantity, 0): 0}</TableCell>
                   </TableRow>
                   </TableBody>
               </Table>
@@ -633,11 +657,21 @@ const Checkout = ({ informacion, provincias, envio  }) => {
                 <p>
                 Tus datos personales se utilizarán para procesar tu pedido, mejorar tu experiencia en esta web y otros propósitos descritos en nuestra Política de Privacidad.
                 </p>
-              <FormControlLabel className="check-polite" control={<Checkbox />} label="Acepto los términos y condiciones de la Política de Privacidad" />
+              <FormControlLabel 
+                className="checkPolite"
+                control={<Checkbox />}
+                label="Acepto los términos y condiciones de la Política de Privacidad"
+                id="checkPolite"
+                name='checkPolite'
+                onChange={handleChangePolite}
+                style={form.checkPolite.error? {border: '1px solid red'}:{border: 'none'}}
+                value={form.checkPolite.value}
+                />
               <Button
                   variant="contained"
                   type="submit" 
                   onClick={handleSubmit}
+                  className="btn-checkout"
                 >Realizar Pedido</Button>
             </Box>
           </Grid>

@@ -1,11 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { 
     Grid,
     Button, 
     Divider, 
-    InputLabel,
-    Select,
-    MenuItem, 
     FormControl, 
     Rating, 
     ButtonGroup, 
@@ -19,14 +16,12 @@ import {
     Link as LinkStyled } from '@mui/material';
 import { store } from '../../context/store'
 import { ADD_CART } from '../../context/actions'
-import { findProduct } from '../../context/use-local-storage'
 import styled from '@emotion/styled';
 import imageSafery from '../../../public/safely-mercado.png'
 import Image from 'next/image'
 import Link from 'next/link'
 import imageUrlBuilder from '@sanity/image-url'
 import { sanity } from '../../lib/client'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 function urlFor (source) {
     return imageUrlBuilder(sanity).image(source)
@@ -165,11 +160,11 @@ const ProductDetail = (props) => {
     const [cuantity, setCuantity] = useState(1);
     const [inputError, setInputError] = useState(false)
     const [open, setOpen] = useState(false)
-    
-
 
     const handleToggle = () => {
-      setOpen(anterior => !anterior)
+      if(cuantity > 0){
+        setOpen(!open)
+      }
     }
 
     const checkInput = (valor) => {
@@ -208,6 +203,7 @@ const ProductDetail = (props) => {
           price:props.priceNow,
           slug:props.slug,
           volumen:props.volumen,
+          description:props.descripcionBreve,
         }
       })
     }
@@ -224,8 +220,7 @@ const ProductDetail = (props) => {
             <h1>{props.tituloDelProducto}</h1>
             <Rating name="half-rating-read" defaultValue={props.valoracion} precision={0.5} readOnly />
             <p>{props.descripcionBreve}</p>
-            <p className="p-antencion">Seleccioná el volumen para ver los precios.<br/> (1 litro = 1 dm3)</p>
-            <p>lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid</p>
+            <p className="p-antencion">(1 litro = 1 dm3)</p>
             <Divider />
             <FormControl sx={{margin: "0"}} component="form" fullWidth onSubmit={handleSubmit} >
             <h3>Volumen: {props.volumen}Lts</h3>

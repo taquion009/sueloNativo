@@ -22,6 +22,12 @@ switch (name) {
     case 'billing_address_1':
     error = value.length < 3;
     break;
+    case 'envio':
+    error = value.length < 3;
+    break;
+    case 'checkPolite':
+    error = value !== true
+    break;
     case 'billing_':
     error = value.length < 1 || !/^\d+$/.test(value);
     break;
