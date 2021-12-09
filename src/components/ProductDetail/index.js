@@ -162,13 +162,12 @@ const ProductDetail = (props) => {
     const [open, setOpen] = useState(false)
 
     const handleToggle = () => {
-      if(/\d/.test(cuantity) && cuantity > 1 && cuantity % 1 === 0){
+      if(/\d/.test(cuantity) && cuantity > 0 && cuantity % 1 === 0){
         setOpen(!open)
       }
     }
 
     const checkInput = (valor) => {
-      //tiene que ser un numero entero y mayor a 0
       if(!/\d/.test(valor) || isNaN(valor) || valor < 1 || valor % 1 !== 0){
         setInputError(true)
         return true
