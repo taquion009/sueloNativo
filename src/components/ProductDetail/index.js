@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { 
     Grid,
     Button, 
@@ -168,18 +168,17 @@ const ProductDetail = (props) => {
       }
     }
 
-    const checkInput = (valor) => {
-      if(!/\d/.test(valor) || isNaN(valor) || valor < 1 || valor % 1 !== 0  || valor > props.stock){
-        setInputError(true)
-        return true
-      }else{
-        setInputError(false)
-        return false
-      }
-    }
+    useEffect(() => {
+        if(!/\d/.test(cuantity) || isNaN(cuantity) || cuantity < 1 || cuantity % 1 !== 0  || cuantity > props.stock){
+          setInputError(true)
+          return true
+        }else{
+          setInputError(false)
+          return false
+        }
+    }, [cuantity, props.stock])
 
     const handleChangeCuantity = (event) => {    
-      checkInput(event.target.value)
       setCuantity(event.target.value); 
     };
 
