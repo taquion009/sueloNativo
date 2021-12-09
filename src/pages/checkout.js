@@ -269,7 +269,6 @@ const Checkout = ({ informacion, provincias, envio  }) => {
         setPreferenceId(data?.data?.data?.response?.id)
       })
       .catch((error) => {
-        console.log(error.response, error.message);
         setLoading(false);
         if(error.response.data.errorInput !== 'envio' && error.response.data.errorInput !== 'checkPolite'){
         document.getElementById(error.response.data.errorInput).focus();
