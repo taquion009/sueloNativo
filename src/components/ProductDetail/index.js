@@ -13,7 +13,8 @@ import {
     DialogActions,
     Slide,
     Alert,
-    Link as LinkStyled } from '@mui/material';
+    Link as LinkStyled,
+    AlertTitle } from '@mui/material';
 import { store } from '../../context/store'
 import { ADD_CART } from '../../context/actions'
 import styled from '@emotion/styled';
@@ -162,13 +163,13 @@ const ProductDetail = (props) => {
     const [open, setOpen] = useState(false)
 
     const handleToggle = () => {
-      if(/\d/.test(cuantity) && cuantity > 0 && cuantity % 1 === 0){
+      if(/\d/.test(cuantity) && cuantity > 0 && cuantity % 1 === 0 && cuantity <= props.stock){
         setOpen(!open)
       }
     }
 
     const checkInput = (valor) => {
-      if(!/\d/.test(valor) || isNaN(valor) || valor < 1 || valor % 1 !== 0){
+      if(!/\d/.test(valor) || isNaN(valor) || valor < 1 || valor % 1 !== 0  || valor > props.stock){
         setInputError(true)
         return true
       }else{
@@ -221,6 +222,12 @@ const ProductDetail = (props) => {
             <Rating name="half-rating-read" defaultValue={props.valoracion} precision={0.5} readOnly />
             <p>{props.descripcionBreve}</p>
             <p className="p-antencion">(1 litro = 1 dm3)</p>
+            {props.stock < 1 &&
+                <Alert severity="error">
+                  <AlertTitle>No hay stock</AlertTitle>
+                  <p>No hay stock disponible para este producto</p>
+                </Alert>
+            }
             <Divider />
             <FormControl sx={{margin: "0"}} component="form" fullWidth onSubmit={handleSubmit} >
             <h3>Volumen: {props.volumen}Lts</h3>
@@ -229,9 +236,7 @@ const ProductDetail = (props) => {
               {props.precioAnterior && <span className="precioAnterior">${Number(props.precioAnterior) * cuantity}</span>}
               <span className="price">${Number(props.priceNow) * cuantity}</span>
             </div>
-            <div className="container-addCart">
-              
-
+            <div className="container-addCart">        
               <ButtonGroup 
                 color="primary" 
                 className="buttonsQuantity"
@@ -254,7 +259,13 @@ const ProductDetail = (props) => {
                 onClick={handleAddCuantity}
                 >+</Button>
                 </ButtonGroup>
-                <Button onClick={handleToggle} sx={{minWidth: "100px"}} type="submit" variant="contained">AGREGAR AL CARRITO</Button>
+                <Button 
+                  onClick={handleToggle} 
+                  sx={{minWidth: "100px"}} 
+                  type="submit" 
+                  variant="contained"
+                  disabled={props.stock < 1}
+                  >AGREGAR AL CARRITO</Button>
                 <Dialog
                   open={open}
                   TransitionComponent={Transition}
