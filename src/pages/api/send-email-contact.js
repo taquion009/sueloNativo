@@ -1,4 +1,5 @@
 import { sendEmail } from '../../lamda-services/send-email-contact-service';
+import axios from 'axios';
 
 const send = async (req, res) => {
   if (req.method !== 'POST') 
@@ -8,6 +9,35 @@ const send = async (req, res) => {
         message: "ErrorMessages.EndpointMethodIncorrect",
       },
     });
+
+    const { email, captcha, name, message } = req.body;
+
+    if (!email || !captcha || !name || !message) {
+      return res.status(422).json({
+        message: "Unproccesable request, please provide the required fields",
+      });
+    }
+
+    try {
+      const response = await axios(
+        `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${captcha}`,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+          },
+          method: "POST",
+        }
+      );
+      const captchaValidation = await response.json();
+
+      if (!captchaValidation.success) {
+        return res.status(422).json({
+          message: "Unproccesable request, Invalid captcha code",
+        });
+      }
+    } catch (error) {
+      return res.status(422).json({ message: "Something went wrong" });
+    }
   
   const result = await sendEmail("loli009master@gmail.com", req.body.email, req.body.message, req.body.billing_first_name);
 

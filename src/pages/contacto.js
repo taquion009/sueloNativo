@@ -145,6 +145,7 @@ const Contacto = ({ informacion }) => {
         message:""
     })
     const [loading, setLoading] = useState(false)
+    const [captchaCode, setCaptchaCode] = useState("")
     const recaptchaRef = React.createRef();
     const handleToggle = () => setOpen(ant => !ant);
 
@@ -160,7 +161,7 @@ const Contacto = ({ informacion }) => {
     },[informacion.whatsapp])
 
     const onReCAPTCHAChange = value => {
-        console.log(value);
+        setCaptchaCode(value);
     };
 
     const handleChange = (e) => {
@@ -180,7 +181,8 @@ const Contacto = ({ informacion }) => {
         }
         axios.post('/api/send-email-contact',
         {
-            ...from
+            ...from,
+            captcha: captchaCode
         }
         )
         .then(res=>{
