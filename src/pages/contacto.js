@@ -160,7 +160,7 @@ const Contacto = ({ informacion }) => {
     },[informacion.whatsapp])
 
     useEffect(() => {
-        if (typeof window === 'undefined' )return;
+        if (typeof window === 'undefined' || window.grecaptcha === undefined )return;
             setGrecaptcha(window.grecaptcha.render('example1', {
                 'sitekey' : '6LeGLakdAAAAAAN2g9NIkrTAM2h7ftby9WgIwi5h',
                 'theme' : 'light'
