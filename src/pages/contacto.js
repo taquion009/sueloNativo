@@ -161,7 +161,9 @@ const Contacto = ({ informacion }) => {
     },[informacion.whatsapp])
 
     const onReCAPTCHAChange = value => {
-        setCaptchaCode(value);
+        if(recaptchaRef.current.getValue()){
+            setCaptchaCode(recaptchaRef.current.getValue())
+        }
     }
 
     const handleChange = (e) => {
