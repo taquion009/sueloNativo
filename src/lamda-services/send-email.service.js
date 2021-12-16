@@ -14,7 +14,7 @@ export const sendEmail = async ({ email, data }) => {
         transactionLog: true
       },
       {
-              from: 'rmilesi0092@gmail.com',
+              from: 'rmilesi009@gmail.com',
               headers: {
                   'X-Laziness-level': 1000
               }
