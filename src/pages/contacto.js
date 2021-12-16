@@ -160,7 +160,7 @@ const Contacto = ({ informacion }) => {
         }
     },[informacion.whatsapp])
 
-    const onReCAPTCHAChange = value => {
+    const onReCAPTCHAChange = () => {
         if(recaptchaRef.current.getValue()){
             setCaptchaCode(recaptchaRef.current.getValue())
         }
@@ -193,7 +193,7 @@ const Contacto = ({ informacion }) => {
         })
         .catch((err)=>{
             setLoading(false)
-            console.log(err, err.response)
+            alert(`No se pudo enviar el mensaje, intente nuevamente, ${err.response?.data?.message}`)
         })
     }
 
