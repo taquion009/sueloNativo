@@ -161,6 +161,7 @@ const Contacto = ({ informacion }) => {
 
     useEffect(() => {
         if (typeof window === 'undefined' || window.grecaptcha === undefined )return;
+        console.log(window.grecaptcha)
             setGrecaptcha(window.grecaptcha.render('g-recaptcha', {
                 'sitekey' : '6LeGLakdAAAAAAN2g9NIkrTAM2h7ftby9WgIwi5h',
                 'theme' : 'light'
@@ -177,7 +178,7 @@ const Contacto = ({ informacion }) => {
     const handleSubmit = e => {
         e.preventDefault()
         setLoading(true)
-        console.log(grecaptcha.getResponse("g-recaptcha"))
+        console.log(window.grecaptcha.getResponse(grecaptcha))
         if(from.billing_first_name === "" || from.email === "" || from.message === ""){
             setLoading(false)
             alert("Todos los campos son obligatorios")
