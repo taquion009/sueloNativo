@@ -191,7 +191,7 @@ const Contacto = ({ informacion }) => {
         })
         .catch((err)=>{
             setLoading(false)
-            console.log(err)
+            console.log(err, err.response)
         })
     }
 
