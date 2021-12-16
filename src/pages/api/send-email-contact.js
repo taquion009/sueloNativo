@@ -17,20 +17,26 @@ const send = async (req, res) => {
         message: "Unproccesable request, please provide the required fields",
       });
     }
-      await axios.post(
+
+    try {
+      const response = await axios.post(
         `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${captcha}`,
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
           },
         }
-      ).then(response => {
+      )
+
+      // if (!captchaValidation.success) {
         return res.status(400).json({
-          response
+          message: "Unproccesable request, Invalid captcha code",
+          x: response,
         });
-    }).catch(error =>{
-      return res.status(422).json({ message: "wrong captcha" });
-    })
+      // }
+    } catch (error) {
+      return res.status(422).json(error);
+    }
   
   const result = await sendEmail("loli009master@gmail.com", req.body.email, req.body.message, req.body.billing_first_name);
   return res.status(200).send(result);
