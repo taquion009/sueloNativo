@@ -145,7 +145,7 @@ const TableContainerStyled = styled(TableContainer)`
 `
 
 const Cart = ({ informacion }) => {
-  const { state, dispatch } = useContext(store)
+  const { state } = useContext(store)
   const [changeQuantity, setChangeQuantity] = useState(false)
   const [update, setUpdate] = useState(false)
   const [loadingUpdate, seLoadingUpdate] = useState(false)
@@ -322,7 +322,18 @@ const RowProductCart = ({ product, changeQuantity, setChangeQuantity, update }) 
     if(!changeQuantity)setChangeQuantity(true)
   };
 
-  const handleAddCuantity = () => {  
+  const handleCuantity = (value) => {
+    if(!/\d/.test(value) || isNaN(value) || value < 1 || value % 1 !== 0  || value > product.stock){
+      // setInputError(true)
+      return true
+    }else{
+      // setInputError(false)
+      return false
+    }
+  } 
+
+  const handleAddCuantity = () => { 
+    if(handleCuantity(Number(quantity) + 1))return
     setQuantity(last=>Number(last)+1)
     if(!changeQuantity)setChangeQuantity(true)
   }
@@ -338,8 +349,9 @@ const RowProductCart = ({ product, changeQuantity, setChangeQuantity, update }) 
 
   useEffect(()=>{
     if(!update || quantity === product.quantity)return
+    if(handleCuantity(quantity))return
     dispatch({type:"UPDATE_QUANTITY",payload:{...product, quantity:quantity}})
-  },[update, dispatch, quantity, product])
+  },[update, dispatch, quantity, product,handleCuantity])
 
 
 
@@ -371,7 +383,7 @@ const RowProductCart = ({ product, changeQuantity, setChangeQuantity, update }) 
           inputMode="numeric"
           onChange={handleChangeCuantity}
           value={quantity}
-          // className={`${inputError?"error":""}`}
+          style={{border:handleCuantity(quantity)?"1px solid red":""}}
         />
         <Button
         size="small" 
@@ -403,12 +415,23 @@ const RowProductCartMoblie = ({ product }) => {
     }, 500)
   }
 
+  const handleCuantity = (value) => {
+    if(!/\d/.test(value) || isNaN(value) || value < 1 || value % 1 !== 0  || value > product.stock){
+      // setInputError(true)
+      return true
+    }else{
+      // setInputError(false)
+      return false
+    }
+  } 
+
   const handleChangeCuantity = (event) => {    
     setQuantity(event.target.value);
     if(!changeQuantity)setChangeQuantity(true)
   };
 
   const handleAddCuantity = () => {  
+    if(handleCuantity(Number(quantity)+1))return
     setQuantity(last=>Number(last)+1)
     if(!changeQuantity)setChangeQuantity(true)
   }
@@ -424,8 +447,9 @@ const RowProductCartMoblie = ({ product }) => {
 
   useEffect(()=>{
     if(!update || quantity === product.quantity)return
+    if(handleCuantity(quantity))return
     dispatch({type:"UPDATE_QUANTITY",payload:{...product, quantity:quantity}})
-  },[update, dispatch, quantity, product])
+  },[update, dispatch, quantity, product, handleCuantity])
 
   return(
     <TableContainer component={Paper} sx={{maxWidth:"1200px", border:" 1px solid #eee", margin: "1em auto 0 auto", boxShadow: "none"}}>
@@ -459,6 +483,7 @@ const RowProductCartMoblie = ({ product }) => {
           inputMode="numeric"
           onChange={handleChangeCuantity}
           value={quantity}
+          style={{border:handleCuantity(quantity)?"1px solid red":""}}
           // className={`${inputError?"error":""}`}
         />
         <Button
@@ -475,7 +500,7 @@ const RowProductCartMoblie = ({ product }) => {
         <IconButton variant="outlined" onClick={deleteProduct}>
             <ClearIcon />
         </IconButton>
-        <Button variant="contained" onClick={handleUpdate} disabled={!changeQuantity || loadingUpdate}>{loadingUpdate?"Actualizando...":"Actualizar"}</Button>
+        <Button variant="contained" onClick={handleUpdate} disabled={(!changeQuantity || loadingUpdate) || handleCuantity(quantity)}>{loadingUpdate?"Actualizando...":"Actualizar"}</Button>
       </TableFooterStyledMoblie>
       </TableContainer>
   )

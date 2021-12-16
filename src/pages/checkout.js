@@ -266,19 +266,27 @@ const Checkout = ({ informacion, provincias, envio  }) => {
       }
       ).then((data) => {
         setLoading(false);
+        if(data.data.status === 400){
+          console.log(data.data.message)
+        }else{
         setPreferenceId(data?.data?.data?.response?.id)
+        }
       })
       .catch((error) => {
         setLoading(false);
-        if(error.response.data.errorInput !== 'envio' && error.response.data.errorInput !== 'checkPolite'){
-        document.getElementById(error.response.data.errorInput).focus();
+        if(error.response.data.errorInput !== 'envio' && error.response.data.errorInput !== 'checkPolite' && error.response.data.focus){
+          document.getElementById(error.response.data.errorInput).focus();
+          setForm({...form,
+            [error.response.data.errorInput]:{
+              ...form[error.response.data.errorInput],
+              error:true,
+            }
+          })
+        }else if(error.response.data.message){
+          console.log(error.response.data.message)
+        }else{
+          console.log(error.message,error.response.data)
         }
-        setForm({...form,
-          [error.response.data.errorInput]:{
-            ...form[error.response.data.errorInput],
-            error:true,
-          }
-        })
       }
       );
   };

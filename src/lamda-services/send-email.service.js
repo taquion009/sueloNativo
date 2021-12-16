@@ -66,25 +66,6 @@ export const sendEmail = async ({ email, data }) => {
               <h3>Total: ${data?.transaction_details?.net_received_amount}</h3>
             </body>
           </html>`,
-          // list: {
-          //     // List-Help: <mailto:admin@example.com?subject=help>
-          //     help: 'admin@example.com?subject=help',
-  
-          //     // List-Unsubscribe: <http://example.com> (Comment)
-          //     unsubscribe: [
-          //         {
-          //             url: 'http://example.com/unsubscribe',
-          //             comment: 'A short note about this url'
-          //         },
-          //         'unsubscribe@example.com'
-          //     ],
-  
-          //     // List-ID: "comment" <example.com>
-          //     id: {
-          //         url: 'mylist.example.com',
-          //         comment: 'This is my awesome list'
-          //     }
-          // }
       };
       return new Promise((resolve, reject) => {
       transporter.sendMail(message, (error, info) => {

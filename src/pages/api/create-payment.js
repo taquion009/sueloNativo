@@ -2,6 +2,7 @@ import { configure, preferences } from 'mercadopago';
 import imageUrlBuilder from '@sanity/image-url'
 import { sanity } from '../../lib/client'
 import validateForm from '../../helpers/validateFrom';
+import groq from 'groq'
 
 function configureMercadoPagoSDK() {
   configure({
@@ -66,29 +67,53 @@ const validar = (form) => {
   return false;
 }
 
+const getItems = (products, store) => {
+  const items = []
+
+  for(let i = 0; i < products.length; i++) {
+    items.push({
+      id: products[i]._id,
+      title: products[i].tituloDelProducto,
+      description: `“${products[i].descripcionBreve}“`,
+      picture_url: `${urlFor(products[i].images[0]).width(400).height(400).url()}`,
+      category_id: products[i]._type,
+      quantity: Number(store[i].quantity),
+      unit_price: Number(products[i].priceNow),
+    })
+  }
+
+  return items
+}
+
 const createPayment = async (req, res) => {
   const valido = await validar(req.body.form);
   
   if(valido !== false) {
     return res.status(400).json({
-      errorInput: valido
+      errorInput: valido,
+      focus: true
     });
+  }
+
+  const idProducto = req.body.store.map(item => `"${item._id}"`).join('|| _id ==');
+  
+  const queryProducts = groq`
+    *[_type == "producto" && (_id == ${idProducto})] | order(_createdAt asc)
+  `
+  const products = await sanity.fetch(queryProducts)
+
+  if(products.length === 0) {
+   return res.status(404).json({
+      message: 'No se encontraron productos'
+  })
   }
 
   configureMercadoPagoSDK()
 
-  preference.items = await req.body.store.map(item => {
-    return {
-      id: item._id,
-      title: item.name,
-      description: `“${item.description}“`,
-      picture_url: `${urlFor(item.image).width(400).height(400).url()}`,
-      category_id: "item.category",
-      quantity: item.quantity,
-      unit_price: item.price,
-    }
-  })
-  preference
+  console.log(getItems(products, req.body.store))
+
+  preference.items = await getItems(products, req.body.store)
+
   preference.payer = {
     address: {
       zip_code: req.body.form.zip,

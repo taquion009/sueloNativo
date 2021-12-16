@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
+import Loader from '../components/Loader';
 import { 
     TextField, 
     Box, 
@@ -22,6 +23,7 @@ import { sanity } from '../lib/client'
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import axios from 'axios' 
 import Link from 'next/link';
 
 const BoxStyled = styled(Box)`
@@ -137,6 +139,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const Contacto = ({ informacion }) => {
     const [url, setUrl] = useState("/")
     const [open, setOpen] = useState(false);
+    const [from, setFrom] = useState({
+        billing_first_name:"",
+        email:"",
+        message:""
+
+    })
+    const [loading, setLoading] = useState(false)
     const handleToggle = () => setOpen(ant => !ant);
 
 
@@ -150,10 +159,41 @@ const Contacto = ({ informacion }) => {
         }
     },[informacion.whatsapp])
 
+    const handleChange = (e) => {
+        setFrom({
+            ...from,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        setLoading(true)
+        if(from.billing_first_name === "" || from.email === "" || from.message === ""){
+            setLoading(false)
+            alert("Todos los campos son obligatorios")
+            return
+        }
+        axios.post('/api/send-email-contact',
+        {
+            ...from
+        }
+        )
+        .then(res=>{
+            setLoading(false)
+            handleToggle()
+        })
+        .catch((err)=>{
+            setLoading(false)
+            console.log(err)
+        })
+    }
+
   return (
     <Layout scroll={false} informacion={informacion}>
       <Head>
           <title>Contacto - Suelo Nativo</title>
+          <script src="https://www.google.com/recaptcha/api.js" async defer></script>
       </Head>
       <main style={{
           padding:"1em", 
@@ -166,10 +206,7 @@ const Contacto = ({ informacion }) => {
             component="form"
             noValidate
             autoComplete="off"
-            onSubmit={e => {
-                e.preventDefault()
-                handleToggle()
-            }}
+            onSubmit={handleSubmit}
             >
             <TextField
             placeholder="Enter your name"
@@ -177,8 +214,8 @@ const Contacto = ({ informacion }) => {
             id="billing_first_name" 
             name="billing_first_name" 
             variant="outlined"
-            //   value={this.state.name}
-            //   onChange={(e) => this.setState({ name: e.target.value })}
+            value={from.billing_first_name}
+            onChange={handleChange}
             required
             type="text"
             />
@@ -188,9 +225,8 @@ const Contacto = ({ informacion }) => {
             label="Email"
             placeholder="Enter email address"
             variant="outlined"
-            //   value={this.state.email}
-            //   onChange={(e) => this.handleChangeEmail(e)}
-            //   error={this.state.emailError}
+            value={from.email}
+            onChange={handleChange}
             required
             type="email"
             />
@@ -202,8 +238,8 @@ const Contacto = ({ informacion }) => {
             id="message"
             multiline
             rows={4}
-            //   value={this.state.message}
-            //   onChange={(e) => this.setState({ message: e.target.value })}
+            value={from.message}
+            onChange={handleChange}
             required
             type="text"
             />
@@ -275,6 +311,11 @@ const Contacto = ({ informacion }) => {
                       <p>Tu mensaje ha sido enviado con éxito, en breve nos pondremos en contacto contigo.</p>
                     </DialogContentText>
                   </DialogContent>
+                  <form action="?" method="POST">
+                    <div className="g-recaptcha" data-sitekey="6LeGLakdAAAAAAN2g9NIkrTAM2h7ftby9WgIwi5h"></div>
+                    <br/>
+                    <input type="submit" value="Submit" />
+                    </form>
                   <DialogActionsStyled>
                     <LinkStyled component="button"
                       variant="body2"
@@ -283,6 +324,7 @@ const Contacto = ({ informacion }) => {
                     <Button variant="contained"><Link href="/"><a>Ir al inicio</a></Link></Button>
                   </DialogActionsStyled>
                 </Dialog>
+                {loading && <Loader />}
     </Layout>
   );
 };

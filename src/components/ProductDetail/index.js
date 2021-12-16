@@ -169,21 +169,34 @@ const ProductDetail = (props) => {
     }
 
     useEffect(() => {
-        if(!/\d/.test(cuantity) || isNaN(cuantity) || cuantity < 1 || cuantity % 1 !== 0  || cuantity > props.stock){
-          setInputError(true)
-          return true
-        }else{
-          setInputError(false)
-          return false
-        }
+      if(!/\d/.test(cuantity) || isNaN(cuantity) || cuantity < 1 || cuantity % 1 !== 0  || cuantity > props.stock){
+        setInputError(true)
+        return true
+      }else{
+        setInputError(false)
+        return false
+      }
     }, [cuantity, props.stock])
+
+    const handleCuantity = (value) => {
+      if(!/\d/.test(value) || isNaN(value) || value < 1 || value % 1 !== 0  || value > props.stock){
+        setInputError(true)
+        return true
+      }else{
+        setInputError(false)
+        return false
+      }
+    }  
 
     const handleChangeCuantity = (event) => {    
       setCuantity(event.target.value); 
     };
 
-    const handleAddCuantity = () => {  
-      setCuantity(last=>Number(last)+1)
+    const handleAddCuantity = () => {
+      if(cuantity === props.stock) return; 
+      if(!handleCuantity(cuantity + 1)){
+        setCuantity(last=>Number(last)+1)
+      } 
     }
 
     const handleSubtractCuantity = () => {
@@ -192,7 +205,7 @@ const ProductDetail = (props) => {
 
     const handleSubmit = e => {   
       e.preventDefault()
-      if(inputError)return null
+      if(inputError) return;
       dispatch({
         type:ADD_CART,
         payload:{
@@ -204,6 +217,7 @@ const ProductDetail = (props) => {
           slug:props.slug,
           volumen:props.volumen,
           description:props.descripcionBreve,
+          stock:props.stock,
         }
       })
     }
