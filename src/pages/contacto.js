@@ -143,7 +143,6 @@ const Contacto = ({ informacion }) => {
         billing_first_name:"",
         email:"",
         message:""
-
     })
     const [loading, setLoading] = useState(false)
     const recaptchaRef = React.createRef();
