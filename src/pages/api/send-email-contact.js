@@ -10,9 +10,9 @@ const send = async (req, res) => {
       },
     });
 
-    const { email, captcha, name, message } = req.body;
+    const { email, captcha, billing_first_name, message } = req.body;
 
-    if (!email || !captcha || !name || !message) {
+    if (!email || !captcha || !billing_first_name || !message) {
       return res.status(422).json({
         message: "Unproccesable request, please provide the required fields",
       });
