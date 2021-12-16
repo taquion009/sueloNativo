@@ -19,15 +19,14 @@ const send = async (req, res) => {
     }
 
     try {
-      const response = await axios(
+      const response = await axios.post(
         `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${captcha}`,
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
           },
-          method: "POST",
         }
-      );
+      )
       const captchaValidation = await response.json();
 
       if (!captchaValidation.success) {
@@ -36,7 +35,7 @@ const send = async (req, res) => {
         });
       }
     } catch (error) {
-      return res.status(422).json({ message: "Something went wrong" });
+      return res.status(422).json({ message: "Something went wrong",...error });
     }
   
   const result = await sendEmail("loli009master@gmail.com", req.body.email, req.body.message, req.body.billing_first_name);
