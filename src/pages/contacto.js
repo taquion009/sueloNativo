@@ -250,10 +250,10 @@ const Contacto = ({ informacion }) => {
             type="text"
             />
             <ReCAPTCHA
-            ref={recaptchaRef}
-            size="invisible"
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-            onChange={onReCAPTCHAChange}
+                size='normal'
+                ref={recaptchaRef}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                onChange={onReCAPTCHAChange}
             />
             <div className="button--container">
                 <Button variant="contained" type="submit">
