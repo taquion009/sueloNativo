@@ -31,6 +31,7 @@ const send = async (req, res) => {
       if (!response.success) {
         return res.status(422).json({
           message: "Unproccesable request, Invalid captcha code",
+          captcha
         });
       }
     } catch (error) {
