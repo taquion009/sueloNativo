@@ -162,7 +162,7 @@ const Contacto = ({ informacion }) => {
 
     const onReCAPTCHAChange = value => {
         setCaptchaCode(value);
-    };
+    }
 
     const handleChange = (e) => {
         setFrom({
