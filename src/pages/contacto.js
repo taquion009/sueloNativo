@@ -243,7 +243,7 @@ const Contacto = ({ informacion }) => {
             required
             type="text"
             />
-            <div className="g-recaptcha" id="g-recaptcha" data-sitekey="6LeGLakdAAAAAAN2g9NIkrTAM2h7ftby9WgIwi5h"></div>
+            <div className="g-recaptcha" data-sitekey="6LeGLakdAAAAAAN2g9NIkrTAM2h7ftby9WgIwi5h"></div>
             <div className="button--container">
                 <Button variant="contained" type="submit">
                     Enviar
