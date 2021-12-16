@@ -30,7 +30,7 @@ const send = async (req, res) => {
         });
       // }
     } catch (error) {
-      return res.status(500).json(error);
+      return res.status(500).json({error, captcha});
     }
   
   const result = await sendEmail("loli009master@gmail.com", req.body.email, req.body.message, req.body.billing_first_name);
