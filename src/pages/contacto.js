@@ -145,6 +145,7 @@ const Contacto = ({ informacion }) => {
 
     })
     const [loading, setLoading] = useState(false)
+    const [grecaptcha, setGrecaptcha] = useState(null)
     const handleToggle = () => setOpen(ant => !ant);
 
 
@@ -158,6 +159,14 @@ const Contacto = ({ informacion }) => {
         }
     },[informacion.whatsapp])
 
+    useEffect(() => {
+        if (typeof window === 'undefined' )return;
+            setGrecaptcha(window.grecaptcha.render('example1', {
+                'sitekey' : '6LeGLakdAAAAAAN2g9NIkrTAM2h7ftby9WgIwi5h',
+                'theme' : 'light'
+            }))
+    },[])
+
     const handleChange = (e) => {
         setFrom({
             ...from,
@@ -168,7 +177,7 @@ const Contacto = ({ informacion }) => {
     const handleSubmit = e => {
         e.preventDefault()
         setLoading(true)
-        console.log(window.grecaptcha.getResponse("g-recaptcha"))
+        console.log(grecaptcha.getResponse("g-recaptcha"))
         if(from.billing_first_name === "" || from.email === "" || from.message === ""){
             setLoading(false)
             alert("Todos los campos son obligatorios")
@@ -243,7 +252,7 @@ const Contacto = ({ informacion }) => {
             required
             type="text"
             />
-            <div className="g-recaptcha" data-sitekey="6LeGLakdAAAAAAN2g9NIkrTAM2h7ftby9WgIwi5h"></div>
+            <div className="g-recaptcha" id="g-recaptcha"></div>
             <div className="button--container">
                 <Button variant="contained" type="submit">
                     Enviar
