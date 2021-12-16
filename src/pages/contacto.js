@@ -177,7 +177,7 @@ const Contacto = ({ informacion }) => {
     const handleSubmit = e => {
         e.preventDefault()
         setLoading(true)
-        console.log(window.grecaptcha.getResponse(grecaptcha))
+        console.log(grecaptcha.getResponse("g-recaptcha"))
         if(from.billing_first_name === "" || from.email === "" || from.message === ""){
             setLoading(false)
             alert("Todos los campos son obligatorios")
