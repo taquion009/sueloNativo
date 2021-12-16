@@ -243,6 +243,11 @@ const Contacto = ({ informacion }) => {
             required
             type="text"
             />
+            <form action="?" method="POST">
+                    <div className="g-recaptcha" data-sitekey="6LeGLakdAAAAAAN2g9NIkrTAM2h7ftby9WgIwi5h"></div>
+                    <br/>
+                    <input type="submit" value="Submit" />
+                    </form>
             <div className="button--container">
             <Button variant="contained" type="submit">
                 Enviar
@@ -311,11 +316,6 @@ const Contacto = ({ informacion }) => {
                       <p>Tu mensaje ha sido enviado con éxito, en breve nos pondremos en contacto contigo.</p>
                     </DialogContentText>
                   </DialogContent>
-                  <form action="?" method="POST">
-                    <div className="g-recaptcha" data-sitekey="6LeGLakdAAAAAAN2g9NIkrTAM2h7ftby9WgIwi5h"></div>
-                    <br/>
-                    <input type="submit" value="Submit" />
-                    </form>
                   <DialogActionsStyled>
                     <LinkStyled component="button"
                       variant="body2"
