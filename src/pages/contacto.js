@@ -25,6 +25,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import axios from 'axios' 
 import Link from 'next/link';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const BoxStyled = styled(Box)`
     display: flex;
@@ -145,7 +146,7 @@ const Contacto = ({ informacion }) => {
 
     })
     const [loading, setLoading] = useState(false)
-    const [grecaptcha, setGrecaptcha] = useState(null)
+    const recaptchaRef = React.createRef();
     const handleToggle = () => setOpen(ant => !ant);
 
 
@@ -159,14 +160,9 @@ const Contacto = ({ informacion }) => {
         }
     },[informacion.whatsapp])
 
-    useEffect(() => {
-        if (typeof window === 'undefined' || window.grecaptcha === undefined )return;
-        console.log(window.grecaptcha)
-            setGrecaptcha(window.grecaptcha.render('g-recaptcha', {
-                'sitekey' : '6LeGLakdAAAAAAN2g9NIkrTAM2h7ftby9WgIwi5h',
-                'theme' : 'light'
-            }))
-    },[])
+    const onReCAPTCHAChange = value => {
+        console.log(value);
+    };
 
     const handleChange = (e) => {
         setFrom({
@@ -178,7 +174,6 @@ const Contacto = ({ informacion }) => {
     const handleSubmit = e => {
         e.preventDefault()
         setLoading(true)
-        console.log(window.grecaptcha.getResponse(grecaptcha))
         if(from.billing_first_name === "" || from.email === "" || from.message === ""){
             setLoading(false)
             alert("Todos los campos son obligatorios")
@@ -198,6 +193,8 @@ const Contacto = ({ informacion }) => {
             console.log(err)
         })
     }
+
+
 
   return (
     <Layout scroll={false} informacion={informacion}>
@@ -253,7 +250,12 @@ const Contacto = ({ informacion }) => {
             required
             type="text"
             />
-            <div className="g-recaptcha" id="g-recaptcha"></div>
+            <ReCAPTCHA
+            ref={recaptchaRef}
+            size="invisible"
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+            onChange={onReCAPTCHAChange}
+            />
             <div className="button--container">
                 <Button variant="contained" type="submit">
                     Enviar
