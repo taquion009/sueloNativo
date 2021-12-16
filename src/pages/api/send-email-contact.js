@@ -35,7 +35,7 @@ const send = async (req, res) => {
         });
       }
     } catch (error) {
-      return res.status(422).json({ message: "Something went wrong",...error });
+      return res.status(422).json({ message: "Something went wrong",error, captcha });
     }
   
   const result = await sendEmail("loli009master@gmail.com", req.body.email, req.body.message, req.body.billing_first_name);
