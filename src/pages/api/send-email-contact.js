@@ -40,7 +40,6 @@ const send = async (req, res) => {
     }
   
   const result = await sendEmail("loli009master@gmail.com", req.body.email, req.body.message, req.body.billing_first_name);
-
   return res.status(200).send(result);
 };
 
