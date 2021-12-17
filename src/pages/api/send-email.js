@@ -1,5 +1,5 @@
 import { sendEmail } from '../../lamda-services/send-email.service';
-import { sendEmailLlego } from '../../lamda-services/send-email.service';
+import { sendEmailLlego } from '../../lamda-services/send-email.llego';
 import axios from 'axios'
 
 const send = async (req, res) => {
