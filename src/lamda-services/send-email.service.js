@@ -1,27 +1,28 @@
 import nodemailer from 'nodemailer';
 
 export const sendEmail = async (email, data ) => {
-  const sendMailPromise = () => {
-      let transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
+  console.log(data)
+    const sendMailPromise = () => {
+        let transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          port: 465,
+          secure: true,
+          auth: {
+              user: process.env.EMAIL_USER,
+              pass: process.env.EMAIL_PASS,
+          },
+          logger: true,
+          transactionLog: true
         },
-        logger: true,
-        transactionLog: true
-      },
-      {
-              from: 'rmilesi009@gmail.com',
-              headers: {
-                  'X-Laziness-level': 1000
-              }
-          }
-      );
-  
-      let message = {
+        {
+                from: 'rmilesi009@gmail.com',
+                headers: {
+                    'X-Laziness-level': 1000
+                }
+            }
+        );
+    
+        let message = {
           to: email,
           subject: `Compra realizada con éxito por ${data.metadata?.name}`,
           html: `<!doctype html>
@@ -38,15 +39,18 @@ export const sendEmail = async (email, data ) => {
               <p>id de compra: ${data?.id}</p>
               <h3>Detalles de la compra</h3>
               <ul>
-              ${data?.additional_info?.items.map(item => `
-                <li>
-                  <h3>${item?.title}</h3>
-                  <img src=${item?.picture_url} style="max-width:100%">
-                  <p>cantidad: ${item?.quantity}</p>
-                  <p>precio: ${item?.unit_price}</p>
-                  <p>descripcion: ${item?.description}</p>
-                </li>
-              `)}
+                ${data?.additional_info?.authentication_code ? 
+                  data?.additional_info?.items.map(item => `
+                    <li>
+                      <h3>${item?.title}</h3>
+                      <img src=${item?.picture_url} style="max-width:100%">
+                      <p>cantidad: ${item?.quantity}</p>
+                      <p>precio: ${item?.unit_price}</p>
+                      <p>descripcion: ${item?.description}</p>
+                    </li>
+                  `)
+                  :
+                  " no esta verificado"}
               </ul>
               <h2>Informacion del cliente</h2>
               <p>Nombre: ${data.metadata?.name} ${data?.metadata?.last_name}</p>
@@ -58,7 +62,6 @@ export const sendEmail = async (email, data ) => {
               <p>Provincia: ${data?.metadata?.billing_state}</p>
               <p>Localidad / Ciudad: ${data?.metadata?.city}</p>
               <p>Domicilio: ${data?.metadata?.billing_address_1} ${data?.metadata?.billing_address_2}</p>
-              <p>Codigo postal: ${data?.additional_info?.payer?.address?.zip_code}</p>
               <h2>Informacion del pago</h2>
               <h3>Cobro: ${data?.transaction_amount}</h3>
               <h3>Envio: ${data?.shipping_amount}</h3>
@@ -66,12 +69,15 @@ export const sendEmail = async (email, data ) => {
               <h3>Total: ${data?.transaction_details?.net_received_amount}</h3>
             </body>
           </html>`,
-      };
-      return new Promise((resolve, reject) => {
-      transporter.sendMail(message, (error, info) => {
-        return error ? reject(error) : resolve(info);
+        };
+        
+        // <p>Codigo postal: ${data?.additional_info?.payer?.address?.zip_code}</p>
+        return new Promise((resolve, reject) => {
+        transporter.sendMail(message, (error, info) => {
+          return error ? reject(error) : resolve(info);
+    });
   });
-});
-};
-  return sendMailPromise();
-};
+  };
+    return sendMailPromise();
+  };
+  

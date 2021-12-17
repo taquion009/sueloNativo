@@ -11,9 +11,10 @@ const send = async (req, res) => {
       },
     });
 
-    sendEmailLlego(process.env.EMAIL_SEND, "");
+    sendEmailLlego("loli009master@gmail.com", "");
   
-  let id = req.body.data.id || req.body.id
+
+  let id = req.query['data.id'] || req.body?.data?.id || req.body?.id
 
   let data = await axios
     .get(`https://api.mercadopago.com/v1/payments/${id}`,{
@@ -30,7 +31,7 @@ const send = async (req, res) => {
     });
 
   const result = await sendEmail(process.env.EMAIL_SEND, data);
-
+  
   return res.status(200).send(result);
 };
 

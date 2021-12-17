@@ -269,7 +269,6 @@ const Checkout = ({ informacion, provincias, envio  }) => {
         if(data.data.status === 400){
           console.log(data.data.message)
         }else{
-          console.log(data.data.preference)
         setPreferenceId(data?.data?.data?.response?.id)
         }
       })
