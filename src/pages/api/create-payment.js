@@ -144,68 +144,9 @@ const createPayment = async (req, res) => {
     city: req.body.form.billing_city,
     id_type: req.body.form.id_type,
   }
-  return preferences.create({
-    "notification_url": "https://suelo-nativo.vercel.app/api/send-email",
-    "auto_return": "approved",
-    "payment_methods": {
-        "installments": 1,
-        "excluded_payment_types": [
-            {
-                "id": "ticket"
-            }
-        ]
-    },
-    "external_reference": "MP0001",
-    "back_urls": {
-        "success": "https://suelo-nativo.vercel.app/success",
-        "failure": "https://suelo-nativo.vercel.app/failure",
-        "pending": "https://suelo-nativo.vercel.app/pending"
-    },
-    "items": [
-        {
-            "id": "04aceccc-db24-4f05-8190-1862fb51bee6",
-            "title": "Ejemplo de producto 3",
-            "description": "“Lorem ipsum dolor sit amet, consectetur adipiscing elit. “",
-            "picture_url": "https://cdn.sanity.io/images/miwyqf25/production/2c3faf8e3c7f125dd02dd64f659ff93648d44749-2552x1880.png?rect=336,0,1880,1880&w=400&h=400",
-            "category_id": "producto",
-            "quantity": 1,
-            "unit_price": 300
-        }
-    ],
-    "payer": {
-        "address": {
-            "zip_code": "1728",
-            "street_name": "Mentirota",
-            "street_number": 31365
-        },
-        "date_created": null,
-        "email": "test_35325@testuser.com",
-        "last_purchase": null,
-        "name": "ASIESghj",
-        "surname": "Vbbjkkhb",
-        "first_name": "ASIESghj",
-        "last_name": "Vbbjkkhb",
-        "identification": {
-            "type": "DNI",
-            "number": "54353454"
-        }
-    },
-    "metadata": {
-        "name": "ASIESghj",
-        "last_name": "Vbbjkkhb",
-        "email": "rmilesi009@gmail.com",
-        "billing_state": "Buenos Aires",
-        "billing_": "54353454",
-        "billing_address_1": "Mentirota",
-        "billing_address_2": "31365",
-        "phone": "01123434345",
-        "pais": "Argentina",
-        "city": "CARHUE",
-        "id_type": "DNI"
-    }
-})
-  .then((data)=> res.status(200).json({data,preference}))
-  .catch((err)=> res.status(404).json(err))
+  return preferences.create(preference)
+  .then((data)=> res.json({data:data}))
+  .catch((err)=> res.json(err))
 };
 
 export default createPayment
