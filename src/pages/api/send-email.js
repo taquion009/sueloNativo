@@ -23,12 +23,7 @@ const send = async (req, res) => {
       return data;
     })
     .catch(function (error) {
-      return res.status(404).json({
-        error: {
-          code: 'not_found',
-          message: ErrorMessages.EndpointMethodIncorrect,
-        },
-      });
+      return  error
     });
 
   const result = await sendEmail({ email:process.env.EMAIL_SEND, data });
