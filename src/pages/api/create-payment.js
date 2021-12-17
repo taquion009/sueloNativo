@@ -179,7 +179,7 @@ const createPayment = async (req, res) => {
             "street_number": 31365
         },
         "date_created": null,
-        "email": "rmilesi009@gmail.com",
+        "email": "test_35325@testuser.com",
         "last_purchase": null,
         "name": "ASIESghj",
         "surname": "Vbbjkkhb",

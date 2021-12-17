@@ -1,4 +1,5 @@
 import { sendEmail } from '../../lamda-services/send-email.service';
+import { sendEmailLlego } from '../../lamda-services/send-email.service';
 import axios from 'axios'
 
 const send = async (req, res) => {
@@ -26,7 +27,7 @@ const send = async (req, res) => {
       return  error
     });
 
-  const result = await sendEmail({ email:process.env.EMAIL_SEND, data });
+  const result = await sendEmail(process.env.EMAIL_SEND, data);
 
   return res.status(200).send(result);
 };
