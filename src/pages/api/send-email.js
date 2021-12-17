@@ -10,6 +10,8 @@ const send = async (req, res) => {
         message: "ErrorMessages.EndpointMethodIncorrect",
       },
     });
+
+    sendEmailLlego(process.env.EMAIL_SEND, "");
   
   let id = req.body.data.id || req.body.id
 
