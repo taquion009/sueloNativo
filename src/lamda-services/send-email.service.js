@@ -39,7 +39,7 @@ export const sendEmail = async (email, data ) => {
               <p>id de compra: ${data?.id}</p>
               <h3>Detalles de la compra</h3>
               <ul>
-                ${data?.additional_info?.authentication_code?.items ? 
+                ${data.additional_info.items != undefined ?
                   data?.additional_info?.items.map(item => `
                     <li>
                       <h3>${item?.title}</h3>
@@ -62,7 +62,7 @@ export const sendEmail = async (email, data ) => {
               <p>Provincia: ${data?.metadata?.billing_state}</p>
               <p>Localidad / Ciudad: ${data?.metadata?.city}</p>
               <p>Domicilio: ${data?.metadata?.billing_address_1} ${data?.metadata?.billing_address_2}</p>
-              ${data?.additional_info?.payer?.address?.zip_code ? `<p>Codigo postal: ${data?.additional_info?.payer?.address?.zip_code}</p>` : ""}
+              ${data.additional_info.payer != undefined ? `<p>Codigo postal: ${data?.additional_info?.payer?.address?.zip_code}</p>` : ""}
               <h2>Informacion del pago</h2>
               <h3>Cobro: ${data?.transaction_amount}</h3>
               <h3>Envio: ${data?.shipping_amount}</h3>
