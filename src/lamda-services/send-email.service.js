@@ -67,6 +67,8 @@ export const sendEmail = async (email, data ) => {
               <h3>Envio: ${data?.shipping_amount}</h3>
               <h3>Cargo de Mercado Pago: ${data?.fee_details.map(item => item?.amount).reduce((a, b) => a + b)}</h3>
               <h3>Total: ${data?.transaction_details?.net_received_amount}</h3>
+              // comvertir a texto
+              ${JSON.stringify(data?.additional_info)}
             </body>
           </html>`,
         };

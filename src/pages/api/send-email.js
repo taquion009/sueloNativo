@@ -1,5 +1,4 @@
 import { sendEmail } from '../../lamda-services/send-email.service';
-import { sendEmailLlego } from '../../lamda-services/send-email.llego';
 import axios from 'axios'
 
 const send = async (req, res) => {
@@ -10,9 +9,6 @@ const send = async (req, res) => {
         message: "ErrorMessages.EndpointMethodIncorrect",
       },
     });
-
-    sendEmailLlego("loli009master@gmail.com", "");
-  
 
   let id = req.query['data.id'] || req.body?.data?.id || req.body?.id
 
