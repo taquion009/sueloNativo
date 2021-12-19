@@ -150,7 +150,7 @@ const createPayment = async (req, res) => {
   }
 
   return preferences.create(preference)
-  .then((data)=> res.json({data:data}))
+  .then((data)=> res.json({data}))
   .catch((err)=> res.json(err))
 };
 

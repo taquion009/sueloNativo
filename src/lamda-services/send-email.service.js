@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 
 export const sendEmail = async (email, data ) => {
-  console.log(data)
     const sendMailPromise = () => {
         let transporter = nodemailer.createTransport({
           host: 'smtp.gmail.com',
@@ -63,7 +62,6 @@ export const sendEmail = async (email, data ) => {
               <p>Información adicional: ${data?.metadata?.infoAdicional}</p>
               <h2>Informacion del pago</h2>
               <h3>Cobro: ${data?.transaction_amount}</h3>
-              <h3>Envio: ${data?.shipping_amount}</h3>
               <h3>Cargo de Mercado Pago: ${data?.fee_details.map(item => item?.amount).reduce((a, b) => a + b)}</h3>
               <h3>Total: ${data?.transaction_details?.net_received_amount}</h3>
             </body>
