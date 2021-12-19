@@ -141,7 +141,7 @@ const createPayment = async (req, res) => {
     billing_address_2: req.body.form.billing_address_2,
     phone: req.body.form.phone,
     pais: 'Argentina',
-    infoAdicional: req.body.form.infoAdicional,
+    info_adicional: req.body.form.infoAdicional,
     envio: req.body.form.envio,
     city: req.body.form.billing_city,
     id_type: req.body.form.id_type,
