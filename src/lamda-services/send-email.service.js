@@ -59,12 +59,11 @@ export const sendEmail = async (email, data ) => {
               <p>Localidad / Ciudad: ${data?.metadata?.city}</p>
               <p>Domicilio: ${data?.metadata?.billing_address_1} ${data?.metadata?.billing_address_2}</p>
               <p>Codigo postal: ${data?.metadata?.payer?.address?.zip_code}</p>
-              <p>Información adicional: ${data?.metadata?.infoAdicional}</p>
+              <p>Información adicional: ${data?.metadata?.info_adicional}</p>
               <h2>Informacion del pago</h2>
               <h3>Cobro: ${data?.transaction_amount}</h3>
               <h3>Cargo de Mercado Pago: ${data?.fee_details.map(item => item?.amount).reduce((a, b) => a + b)}</h3>
               <h3>Total: ${data?.transaction_details?.net_received_amount}</h3>
-              ${JSON.stringify(data.metadata)}
             </body>
           </html>`,
         };
