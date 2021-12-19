@@ -39,8 +39,7 @@ export const sendEmail = async (email, data ) => {
               <p>id de compra: ${data?.id}</p>
               <h3>Detalles de la compra</h3>
               <ul>
-                ${data.additional_info.items != undefined ?
-                  data?.additional_info?.items.map(item => `
+                ${data?.metadata?.items.map(item => `
                     <li>
                       <h3>${item?.title}</h3>
                       <img src=${item?.picture_url} style="max-width:100%">
@@ -48,9 +47,7 @@ export const sendEmail = async (email, data ) => {
                       <p>precio: ${item?.unit_price}</p>
                       <p>descripcion: ${item?.description}</p>
                     </li>
-                  `)
-                  :
-                  " no esta verificado"}
+                  `)}
               </ul>
               <h2>Informacion del cliente</h2>
               <p>Nombre: ${data.metadata?.name} ${data?.metadata?.last_name}</p>
@@ -58,18 +55,17 @@ export const sendEmail = async (email, data ) => {
               <p>Numeros de telefono: ${data?.metadata?.phone}</p>
               <p>Identificacion: ${data?.metadata?.id_type} - ${data?.metadata?.billing_}</p>
               <h2>Informacion de envio</h2>
-              <p>Envio: Si</p>
+              <p>Metodo de envio: ${data?.metadata?.envio}</p>
               <p>Provincia: ${data?.metadata?.billing_state}</p>
               <p>Localidad / Ciudad: ${data?.metadata?.city}</p>
               <p>Domicilio: ${data?.metadata?.billing_address_1} ${data?.metadata?.billing_address_2}</p>
-              ${data.additional_info.payer != undefined ? `<p>Codigo postal: ${data?.additional_info?.payer?.address?.zip_code}</p>` : ""}
+              <p>Codigo postal: ${data?.metadata?.payer?.address?.zip_code}</p>
+              <p>Información adicional: ${data?.metadata?.infoAdicional}</p>
               <h2>Informacion del pago</h2>
               <h3>Cobro: ${data?.transaction_amount}</h3>
               <h3>Envio: ${data?.shipping_amount}</h3>
               <h3>Cargo de Mercado Pago: ${data?.fee_details.map(item => item?.amount).reduce((a, b) => a + b)}</h3>
               <h3>Total: ${data?.transaction_details?.net_received_amount}</h3>
-              // comvertir a texto
-              ${JSON.stringify(data?.additional_info)}
             </body>
           </html>`,
         };
