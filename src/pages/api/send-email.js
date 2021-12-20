@@ -27,13 +27,13 @@ const send = async (req, res) => {
     });
   
     console.log(data?.metadata?.items,data)
-  const SendClient = await axios.post("/api/update-stock", {
-    send_client: data?.metadata?.items.map((item) =>{return {id:item.id, quantity:item.quantity}}),
-  }).then((data) => {
-    return data.data.message
-  })
+  // const SendClient = await axios.post("/api/update-stock", {
+  //   send_client: data?.metadata?.items.map((item) =>{return {id:item.id, quantity:item.quantity}}),
+  // }).then((data) => {
+  //   return data.data.message
+  // })
 
-  data.metadata.send_client = await SendClient
+  // data.metadata.send_client = await SendClient
 
   const result = await sendEmail(process.env.EMAIL_SEND, data);
   
