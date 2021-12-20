@@ -1,4 +1,5 @@
 import { sendEmail } from '../../lamda-services/send-email.service';
+import { sendEmailClient } from '../../lamda-services/send-email-client.service';
 import axios from 'axios'
 
 const send = async (req, res) => {
@@ -39,6 +40,8 @@ const send = async (req, res) => {
   })
 
   data.metadata.send_client = SendClient
+
+  const result2 = await sendEmailClient("rmilesi009@gmail.com", process.env.EMAIL_SEND, "Nuevo pago")
 
   const result = await sendEmail(process.env.EMAIL_SEND, {...data})
   
