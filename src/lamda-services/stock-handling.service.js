@@ -2,7 +2,6 @@ import { sanity } from '../lib/client';
 import groq from 'groq'
 
 export const updateSanityStock = async (send_client) => {
-  try{
   const idProducto = send_client.map(item => `"${item.id}"`).join('|| _id ==');
   
   const queryProducts = groq`
@@ -24,7 +23,4 @@ export const updateSanityStock = async (send_client) => {
   .catch(error => {
     return'No se pudo actualizar el stock'
   })
-}catch(error){
-  return'No se pudo actualizar el stock' + error
-}
 };
