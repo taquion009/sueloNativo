@@ -16,11 +16,11 @@ export const updateSanityStock = async (send_client) => {
             dec: { stock: send_client.find(itemC => itemC.id === item._id).quantity }
         },
     }})
-
-  sanity.transaction(patches).commit().then(()=>{
+  let message = sanity.transaction(patches).commit().then(()=>{
     return'Se actualizo el stock'
   })
   .catch(error => {
     return'No se pudo actualizar el stock'
   })
+  return message
 };

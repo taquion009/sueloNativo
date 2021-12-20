@@ -38,7 +38,7 @@ const send = async (req, res) => {
     return data.data.message
   })
 
-  const result = await sendEmail(process.env.EMAIL_SEND, {...data,send_client: SendClient})
+  const result = await sendEmail(process.env.EMAIL_SEND, {...data,send_client: SendClient, send:"DSA"})
   
   return res.status(200).send(result);
 };
