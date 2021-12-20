@@ -25,6 +25,14 @@ const send = async (req, res) => {
     .catch(function (error) {
       return  error
     });
+  
+  const SendClient = await axios.post("/api/update-stock", {
+    pagos: data.items.map((item) =>{return {id:item.id, quantity:item.quantity}}),
+  }).then((data) => {
+    return data.data.message
+  })
+
+  data.metadata.SendClient = await SendClient
 
   const result = await sendEmail(process.env.EMAIL_SEND, data);
   

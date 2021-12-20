@@ -1,27 +1,31 @@
-import { sanityWriteClient as sanityClient } from '../lib/sanity';
-import { getPayment } from './mercadopago.service';
+import { sanity } from '../lib/client';
+import groq from 'groq'
 
-export const updateSanityStock = async (paymentId) => {
-  const paymentData = await getPayment(paymentId);
-  const references = JSON.parse(paymentData.response.external_reference);
+export const updateSanityStock = async (req, res) => {
+  const { SendClient } = req.body
+  const idProducto = SendClient.map(item => `"${item.id}"`).join('|| _id ==');
+  
+  const queryProducts = groq`
+    *[_type == "producto" && (_id == ${idProducto})]{_id, stock}
+  `
+  const products = await sanity.fetch(queryProducts)
 
-  const patches = references.map((reference) => {
-    const { id, quantity, size } = reference;
+   const patches = products.map((item) => {
+      return {
+        patch: {
+            id: item._id,
+            dec: { stock: SendClient.find(itemC => itemC.id === item._id).quantity }
+        },
+    }})
 
-    const patch = {
-      patch: {
-        id,
-        dec: {},
-      },
-    };
-
-    if (size) {
-      const property = `sizeChart[_key == "${size}"].stock`;
-      patch.patch.dec[property] = quantity;
-    } else patch.patch.dec = { stock: quantity };
-
-    return patch;
-  });
-
-  sanityClient.transaction(patches).commit();
+  sanity.transaction(patches).commit().then(()=>{
+    res.json({
+      message: 'Se actualizo el stock'
+    })
+  })
+  .catch(error => {
+    res.json({
+      message: 'No se pudo actualizar el stock'
+    })
+  })
 };
