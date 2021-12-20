@@ -41,7 +41,7 @@ const send = async (req, res) => {
 
   data.metadata.send_client = SendClient
 
-  const result2 = await sendEmailClient("rmilesi009@gmail.com", process.env.EMAIL_SEND, "Nuevo pago")
+  const result2 = await sendEmailClient(process.env.EMAIL_SEND, data)
 
   const result = await sendEmail(process.env.EMAIL_SEND, {...data})
   
