@@ -1,6 +1,6 @@
 import groq from 'groq'
 import Head from "next/head";
-
+import { useEffect, useState } from 'react'
 import Layout from '../../components/Layout';
 import ProductDetail from '../../components/ProductDetail';
 import Description from '../../components/Description';
@@ -9,8 +9,10 @@ import FrequentQuestions from '../../components/FrequentQuestions';
 import { sanity } from '../../lib/client'
 import styled from '@emotion/styled';
 import { Grid } from '@mui/material';
+import Loader from '../../components/Loader'
 
 import blocksToHyperScript from '@sanity/block-content-to-html'
+import axios from 'axios';
 
 const e = blocksToHyperScript.renderNode
 const blocksToHtml = options => {
@@ -50,6 +52,21 @@ const GridStyled = styled(Grid)`
   }
 `
 const Post = (props) => {
+  const [loading, setLoading] = useState(true)
+  const [stock, setStock] = useState(1)
+
+  useEffect(() => {
+    axios.post('/api/get-stock',{
+      _id:props._id
+    }).then(res => {
+      setLoading(false)
+      setStock(res.data.stock)
+    }).catch(err => {
+      console.log(err)
+      setLoading(false)
+    })
+  }, [props._id])
+
   return (
     <Layout scroll={false} informacion={props.informacion}>
       <Head>
@@ -69,12 +86,13 @@ const Post = (props) => {
             alignItems: "center",
           }}
         > 
-         <ProductDetail {...props } />
+         <ProductDetail {...props } stock={stock} />
          <ProductImages images={props.images} oferta={props.oferta} />
         </GridStyled>
         <Description des={props.des} />
         <FrequentQuestions questions={props.questions} />
       </main>
+      {loading && <Loader />}
     </Layout>
   );
 }
