@@ -10,7 +10,7 @@ const send = async (req, res) => {
       },
     });
 
-  let id = req.query['data.id'] || req.body?.data?.id || req.body?.id
+  let id = req.body?.data?.id || req.body?.id || req.query['data.id']
 
   let data = await axios
     .get(`https://api.mercadopago.com/v1/payments/${id}`,{
@@ -26,8 +26,9 @@ const send = async (req, res) => {
       return  error
     });
   
+    console.log(data?.metadata?.items,data)
   const SendClient = await axios.post("/api/update-stock", {
-    send_client: data.metadata.items.map((item) =>{return {id:item.id, quantity:item.quantity}}),
+    send_client: data?.metadata?.items.map((item) =>{return {id:item.id, quantity:item.quantity}}),
   }).then((data) => {
     return data.data.message
   })
