@@ -48,6 +48,7 @@ export const sendEmail = async (email, data ) => {
                     </li>
                   `)}
               </ul>
+              <p>Stock: ${data?.metadata?.send_client}</p>
               <h2>Informacion del cliente</h2>
               <p>Nombre: ${data.metadata?.name} ${data?.metadata?.last_name}</p>
               <p>Email: ${data?.metadata?.email}</p>

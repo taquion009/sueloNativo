@@ -2,8 +2,8 @@ import { sanity } from '../lib/client';
 import groq from 'groq'
 
 export const updateSanityStock = async (req, res) => {
-  const { SendClient } = req.body
-  const idProducto = SendClient.map(item => `"${item.id}"`).join('|| _id ==');
+  const { send_client } = req.body
+  const idProducto = send_client.map(item => `"${item.id}"`).join('|| _id ==');
   
   const queryProducts = groq`
     *[_type == "producto" && (_id == ${idProducto})]{_id, stock}
@@ -14,7 +14,7 @@ export const updateSanityStock = async (req, res) => {
       return {
         patch: {
             id: item._id,
-            dec: { stock: SendClient.find(itemC => itemC.id === item._id).quantity }
+            dec: { stock: send_client.find(itemC => itemC.id === item._id).quantity }
         },
     }})
 
