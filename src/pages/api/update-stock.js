@@ -1,6 +1,6 @@
 import { updateSanityStock } from '../../lamda-services/stock-handling.service';
 
-export default function update(req, res){
+export default async function update(req, res){
   if (req.method !== 'POST')
     res.status(404).json({
       error: {
@@ -8,15 +8,13 @@ export default function update(req, res){
         message: "ErrorMessages.EndpointMethodIncorrect,"
       },
     });
+    const { send_client } = req.body
 
-  const paymentId = req.body.id
-  if (!paymentId) res.status(400).end();
+    if (!send_client) res.status(400).end();
 
-  updateSanityStock(paymentId);
+    const message = await updateSanityStock(send_client);
 
-  res.json({
-        data: {
-            id: paymentId,
-        }
-    });
+    res.json({
+            message
+        });
 };

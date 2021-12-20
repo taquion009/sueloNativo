@@ -10,6 +10,12 @@ const send = async (req, res) => {
       },
     });
 
+  if(req.query['type'] !== "payment"){
+    return res.status(404).json({
+      message: 'No se encontraron productos'
+    })
+  }
+
   let id = req.body?.data?.id || req.body?.id || req.query['data.id']
 
   let data = await axios
@@ -26,14 +32,14 @@ const send = async (req, res) => {
       return  error
     });
   
-    console.log(data?.metadata?.items,data)
-  // const SendClient = await axios.post("/api/update-stock", {
-  //   send_client: data?.metadata?.items.map((item) =>{return {id:item.id, quantity:item.quantity}}),
-  // }).then((data) => {
-  //   return data.data.message
-  // })
+    console.log(JSON.stringify(data))
+  const SendClient = await axios.post("/api/update-stock", {
+    send_client: data?.metadata?.items.map((item) =>{return {id:item.id, quantity:item.quantity}}),
+  }).then((data) => {
+    return data.data.message
+  })
 
-  // data.metadata.send_client = await SendClient
+  data.metadata.send_client = await SendClient
 
   const result = await sendEmail(process.env.EMAIL_SEND, data);
   

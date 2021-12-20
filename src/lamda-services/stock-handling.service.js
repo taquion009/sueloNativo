@@ -1,8 +1,7 @@
 import { sanity } from '../lib/client';
 import groq from 'groq'
 
-export const updateSanityStock = async (req, res) => {
-  const { send_client } = req.body
+export const updateSanityStock = async (send_client) => {
   const idProducto = send_client.map(item => `"${item.id}"`).join('|| _id ==');
   
   const queryProducts = groq`
@@ -19,13 +18,9 @@ export const updateSanityStock = async (req, res) => {
     }})
 
   sanity.transaction(patches).commit().then(()=>{
-    res.json({
-      message: 'Se actualizo el stock'
-    })
+    return'Se actualizo el stock'
   })
   .catch(error => {
-    res.json({
-      message: 'No se pudo actualizar el stock'
-    })
+    return'No se pudo actualizar el stock'
   })
 };
