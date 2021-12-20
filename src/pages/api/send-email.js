@@ -32,7 +32,7 @@ const send = async (req, res) => {
       return  error
     });
   
-  const SendClient = await axios.post("/api/update-stock", {
+  const SendClient = await axios.post(`https://${process.env.DOMAIN_NAME}/api/update-stock`, {
     send_client: data?.metadata?.items.map((item) =>{return {id:item.id, quantity:item.quantity}}),
   }).then((data) => {
     return data.data.message

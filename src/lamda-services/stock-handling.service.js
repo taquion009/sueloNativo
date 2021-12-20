@@ -1,29 +1,29 @@
-// import { sanity } from '../lib/client';
-// import groq from 'groq'
+import { sanity } from '../lib/client';
+import groq from 'groq'
 
 export const updateSanityStock = async (send_client) => {
   try{
-  // const idProducto = send_client.map(item => `"${item.id}"`).join('|| _id ==');
+  const idProducto = send_client.map(item => `"${item.id}"`).join('|| _id ==');
   
-  // const queryProducts = groq`
-  //   *[_type == "producto" && (_id == ${idProducto})]{_id, stock}
-  // `
-  // const products = await sanity.fetch(queryProducts)
+  const queryProducts = groq`
+    *[_type == "producto" && (_id == ${idProducto})]{_id, stock}
+  `
+  const products = await sanity.fetch(queryProducts)
 
-  //  const patches = products.map((item) => {
-  //     return {
-  //       patch: {
-  //           id: item._id,
-  //           dec: { stock: send_client.find(itemC => itemC.id === item._id).quantity }
-  //       },
-  //   }})
+   const patches = products.map((item) => {
+      return {
+        patch: {
+            id: item._id,
+            dec: { stock: send_client.find(itemC => itemC.id === item._id).quantity }
+        },
+    }})
 
-  // sanity.transaction(patches).commit().then(()=>{
+  sanity.transaction(patches).commit().then(()=>{
     return'Se actualizo el stock'
-  // })
-  // .catch(error => {
-  //   return'No se pudo actualizar el stock'
-  // })
+  })
+  .catch(error => {
+    return'No se pudo actualizar el stock'
+  })
 }catch(error){
   return'No se pudo actualizar el stock' + error
 }
