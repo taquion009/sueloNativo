@@ -8,7 +8,7 @@ export default async function update(req, res){
         message: "ErrorMessages.EndpointMethodIncorrect,"
       },
     });
-    const { send_client } = req.body
+    const send_client = req.body.send_client
 
     if (!send_client) res.status(400).end();
 
