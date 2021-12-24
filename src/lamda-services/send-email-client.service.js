@@ -37,7 +37,9 @@ export const sendEmailClient = async ( fromEmail, data ) => {
                 <img src="https://ci6.googleusercontent.com/proxy/OPa_DiAN7EdlTnyf-1mI2HKdDf3UgXvoyzALGQTmubRx1efhZ_kQchA8AQ2WQDehiuMfuxNFpr8cWVs1_EzL9gS96pfj4XNjEv-GSSCVyediewuGefaUN45ZdKfPGXVbTB3Hbs_Joiq2NziWCo4dvpLJqj7Poy9SMORl=s0-d-e1-ft#https://s3-sa-east-1.amazonaws.com/contenido.general.entradauno/imagenes/Clientes/Atlas/logo_header1.png" alt="Suele Nativo" />
                 <h2>Muchas gracias por tu compra</h2>
               </header>
-              ${data}
+              <p>Ahora por favor esperenos hasta que nos comuniquemos con usted para coordinar la entrega de su pedido.</p>
+              <p>Numero de pedido: <strong>${data?.id}</strong></p>
+              <p>Cualquier duda o comentario no dude en contactarnos.<a href="https://suelonativo.com.ar">suelonativo.com.ar</a></p>
               <h3>Detalles de la compra</h3>
               <ul>
                   ${data?.metadata?.items.map(item => `
@@ -51,9 +53,9 @@ export const sendEmailClient = async ( fromEmail, data ) => {
                     `)}
                 </ul>
               <h3>Envio</h3>
-              <p>El metado elegido fue: ${data?.metadata?.send_client}</p>
+              <p>El metodo elegido fue: ${data?.metadata?.envio}</p>
               <h3>Total</h3>
-              <p>${data?.transaction_amount}</p>
+              <p>Pago: $${data?.transaction_amount}</p>
             </body>
           </html>`,
       };
