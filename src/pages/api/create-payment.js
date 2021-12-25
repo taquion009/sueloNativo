@@ -6,7 +6,7 @@ import groq from 'groq'
 
 function configureMercadoPagoSDK() {
   configure({
-    integrator_id:"dev_24c65fb163bf11ea96500242ac130004",
+    integrator_id:process.env.MERCADOPAGO_INTEGRATOR_ID,
     access_token: process.env.MERCADO_PAGO_ACCESS_TOKEN,
   });
 }
