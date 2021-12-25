@@ -34,7 +34,7 @@ export const sendEmailClient = async ( fromEmail, data ) => {
             </head>
             <body>
               <header>
-                <img src="https://${process.env.DOMAIN_NAME}/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.1ab53d11.svg&w=64&q=75" width="64px" height="64px" alt="Suele Nativo" />
+                <img src="https://suelo-nativo.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.1ab53d11.svg&w=64&q=75" width="64px" height="64px" alt="Suele Nativo" />
                 <h2>Muchas gracias por tu compra</h2>
               </header>
               <p>Ahora por favor esperanos hasta que nos comuniquemos con usted para coordinar la entrega de su pedido.</p>
