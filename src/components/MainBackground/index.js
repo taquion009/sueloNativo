@@ -4,7 +4,7 @@ import { sanity } from '../../lib/client'
 import imageUrlBuilder from '@sanity/image-url'
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import Suelo from '../../../public/SUELO.png';
+import Suelo from '../../../public/SUELO.svg';
 
 function urlFor (source) {
   return imageUrlBuilder(sanity).image(source)
