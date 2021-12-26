@@ -37,8 +37,9 @@ const BoxStyled = styled(Box)`
     width: 100%;
     position: relative;
     min-height: calc(100vh - 70px - 8em);
-    & > * {
-        background: #fff;
+    & > MuiFormControl-root {
+        border-radius: 5px;
+        background: rgb(255, 255, 255);
     }
     & > .button--container{
         background: transparent;
